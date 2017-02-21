@@ -1,0 +1,51 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.div-entity-container
+{
+   width:300px;
+   float:left; 
+   border: solid 0px grey; 
+   margin-right:20px;
+}
+
+.div-entity-body
+{
+  background-color:  #fffde7;
+  border: solid 1px #f1c40f; 
+  border-radius:6px;
+}
+
+#aCollapseList
+{
+  display: none;
+}
+
+.show-list-container
+{
+  display: block;
+}
+
+.hide-list-container
+{
+  display: none;
+}
+
+@media screen and (min-width: 630px) 
+{   
+   #divListsContainer {display: block !important;}
+   #aCollapseList { display: none !important;}
+}
+
+@media screen and (max-width: 630px) 
+{   
+   #divListsContainer {display: none;}
+   #aCollapseList { display: block;}
+}
+
