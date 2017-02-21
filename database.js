@@ -5,8 +5,8 @@ var connString = "";
 //var client = new pg.Client(connString);
 var config = {
     user: 'postgres',
-    database: 'alist',
-    password: '123456',
+    database: '',
+    password: '',
     host: 'localhost',
     port: 5432,
     max: 10,
