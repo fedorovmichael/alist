@@ -1,12 +1,12 @@
 var pg = require("pg");
 var db = {};
 
-var connString = "postgres://postgres:123456@localhost:5432/alist";
+var connString = "";
 //var client = new pg.Client(connString);
 var config = {
     user: 'postgres',
-    database: 'alist',
-    password: '123456',
+    database: '',
+    password: '',
     host: 'localhost',
     port: 5432,
     max: 10,
