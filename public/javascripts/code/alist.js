@@ -53,17 +53,27 @@
                 });
 
                 $("body").on("click", "a[id^='list_']", function(event){                   
-                    var id = this.id;
+                    var id = (this.id).split('_')[1];
                     //getListItems(id.split('_')[1], generateAlist);
-                    $('#hdnSelectedList').val(id.split('_')[1]);
-                    var data = {};
-                    data.id = id.split('_')[1];
-                    sendDataToServer('/getListItems', data, generateSelectedList, ''); 
+                    $('#hdnSelectedList').val(id);
+
+                    getSelectedListItems(id);
+                    setSelectedList(id); 
                 });
 
                 $("body").on("change", "input[id^='count_']", function(event){                   
                     var id = (this.id).split('_')[1];
                     changeCountItem(id);                    
+                });
+
+                $("body").on("click", "div[id^='display_']", function(event){                   
+                    var id = (this.id).split('_')[1];                                        
+                    if(event.target.nodeName == 'DIV')
+                    {
+                        $('#hdnSelectedList').val(id);
+                        getSelectedListItems(id);
+                        setSelectedList(id);
+                    }                                    
                 });
                                 
                 $("#aNewList").on("click", function(event){
@@ -80,6 +90,7 @@
                     event.preventDefault();
                     $("#divListsContainer").slideToggle();                   
                 });
+
                                                 
             });          
             
@@ -102,7 +113,7 @@
 
                         $.each(listItems, function(index, value){
                             var id = generateId();                            
-                            arrLists.push({"name": value.name, "count": "1", "select": false, "id": value.id});
+                            arrLists.push({"name": value.name, "active": value.active, "id": value.id});
                         });
                         
                         createListMenu();                      
@@ -119,9 +130,7 @@
                         $("#containerSelectedList").hide();
                         $("#containerFullList").show();
                         var html = '';
-                        html = createHTMLFullList(arrListItems);
-                        $("#containerFullList").html('');
-                        $("#containerFullList").html(html);                   
+                        html = createHTMLFullList(arrListItems);                 
                     
                 }
                 catch(e){}
@@ -158,6 +167,34 @@
                
             }
 
+            function setListActiveCheckbox(obj, fullID)
+            {
+                // var isChecked = $('#' + fullID).is(":checked");
+                // var id = fullID.split('_')[1]; 
+                // var data = {};
+                // data.id = id;
+                // data.selected = isChecked;
+                
+                // var path = '/setActiveList';
+                // sendDataToServer(path, data, '', '');
+                var liLists = $("#ulLists li");
+
+                $.each(liLists, function(index, value){
+                    
+                    var objID = $(value).attr("id");
+
+                    $(value).removeClass("li-list-general-active");
+                    $(value).addClass("li-list-general");
+
+                    if(fullID == objID)
+                    {
+                        $(value).addClass("li-list-general-active");
+                        $(value).removeClass("li-list-general");
+                    }
+
+                })
+            }
+
             function generateId()
             {
                 return Math.random().toString(36).substr(2, 9);
@@ -166,20 +203,23 @@
             function createHTMLFullList(arrListItems)
             {
               var html = '';
+              $("#containerFullList").empty(); 
+              $("#containerFullList").html('');             
+
               $.each(arrListItems, function(i, item)
                {
                     var id = item.id;
                     var fullNameId = "name_" + id;
                     var fullCountId = "count_" + id;
                     var cbSelected = item.selected == true ? "checked" : ""; 
-                    html += "<div class='form-inline' style='background-color:#fffde7; border-bottom-color: #5dade2; border-bottom-width: 1px; border-bottom-style:solid; width:295px; min-width:295px;'>" +
-                            "<div class='form-group' style='width:150px; min-width:150px; float: left; margin-left: 10px; padding-top: 4px;'><span id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                            "<span><input id='"+ fullCountId +"' style='width:40px;' type='text' value='"+ item.count  +"'>" +
-                            "<input id='"+ id +"' class='checkbox1' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+ 
+                    html += "<div class='form-inline div-general-entity-container'>" +
+                            "<div class='form-group div-general-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<span><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'>" +
+                            "<input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+ 
                             "</div>";
                 });
                 
-                return html;
+                $("#containerFullList").html(html); 
             }
             
             function generateSelectedList(selListItems)
@@ -190,30 +230,30 @@
                 $("#containerFullList").hide();
                 $("#containerSelectedList").show();
                 var html = '';
-                html = createHTMLSelectedList(selectedList);
-                $("#containerSelectedList").html('');
-                $("#containerSelectedList").html(html);
-                
+                createHTMLSelectedList(selectedList);                
             }
 
             function createHTMLSelectedList(listItems)
             {            
-              var html = '';
+                var html = '';
+                $("#containerSelectedList").empty();
+                $("#containerSelectedList").html('');                
+
               $.each(listItems, function(i, item)
                {
                     var id = item.id;
                     var fullNameId = "name_" + id;
                     var fullCountId = "count_" + id;
                     var selectedCountId = generateId();
-                    html += "<div id='div_"+ id +"' class='form-inline' style='background-color:#fffde7; border-bottom-color: #5dade2; border-bottom-width: 1px; border-bottom-style:solid; width:295px;'>" +
-                            "<div class='form-group' style='width:150px; min-width:150px; float: left; margin-left: 10px; padding-top: 4px;'><span id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' style='width:40px;' type='text' value='"+ item.count  +"'/>" +
-                            "<a id='btnComplite_"+ id +"' href='#' style='margin-left:5px;'><img src='images/complete.png'/></a>"+
-                            "<a id='btnDelete_"+ id +"' href='#'><img src='images/delete.png'/></a>"+  
+                    html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
+                            "<div class='form-group div-general-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/>" +
+                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right' ><img src='images/complete.png' class='entity-general-button'/></a>"+
+                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right'><img src='images/delete.png' class='entity-general-button'/></a>"+  
                             "</div>";
                 });
                 
-                return html;
+                $("#containerSelectedList").html(html);
             }
 
             function btnDeleteHandler(obj, id)
@@ -324,40 +364,54 @@
 
                 var lists = $("#ulLists");
                 var html = '';
+                var activeID = '';
 
                 $.each(arrLists, function(index, value){
-                    html += "<li id='" + value.id + "' style='border: solid 1px grey; border-radius:6px; height:40px; padding-top:6px; background-color:white;'>" + 
-                    "<div id='display_" + value.id + "' style='width:100%'>" +
-                    "<a id='list_" + value.id + "' href='#' style='margin-left:10px;'>" + value.name + "</a>" + 
-                    "<a id='delete_" + value.id + "' href='#' style='float:right;'><img src='images/delete.png'></a>" + 
-                    "<a id='edit_" + value.id + "' href='#' style='float:right;'><img src='images/edit.png'></a>" + 
-                    "</div>"+
-                    "<div id='editList_" + value.id + "' style='width:100%; display: none;'>" +
-                    "<input id='" + value.id + "' style='margin-left:10px;' value='"+ value.name +"'/>" +                     
-                    "<a id='update_" + value.id + "' href='#' style='float:right;'><img src='images/edit.png'></a>" + 
-                    "</div>"+
+                    var cbSelected = "", activeClass = "li-list-general";
+
+                    if(value.active == true)
+                    {
+                        cbSelected = "checked";
+                        activeClass = "li-list-general-active"
+                        $('#hdnSelectedList').val(value.id);
+                        activeID = value.id;
+                    }
+
+                    html += "<li id='" + value.id + "' class='"+ activeClass +"'>" +
+                        "<div id='display_" + value.id + "' class='li-list-general-div'>" +
+                            "<a id='list_" + value.id + "' href='#' class='entity-general-name'>" + value.name + "</a>" +
+                            "<a id='delete_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/delete.png'></a>" + 
+                            "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png'></a>" + 
+                        "</div>"+
+                        "<div id='editList_" + value.id + "' class='li-list-general-div' style='display: none;'>" +
+                            "<input id='" + value.id + "' class='list-new-input' value='"+ value.name +"'/>" +
+                            "<input id='cb_"+ value.id +"' class='input-cb-count' type='checkbox' onclick='setListActiveCheckbox(this, this.id);' value='' "+ cbSelected+ ">" +                    
+                            "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png'></a>" + 
+                        "</div>"+
                     "</li>"; 
                 })
                 
                 lists.append(html);
+                getSelectedListItems(activeID);
+
             }
 
             function createEditListItems()
             {
-
                 var items = $("#ulEditItems");
                 var html = '';
                 items.empty();
 
                 $.each(arrListItems, function(index, value){
-                    html += "<li id='" + value.id + "' style='border: solid 1px grey; border-radius:6px; height:40px; padding-top:6px; background-color:white;'>" + 
-                    "<div id='display_" + value.id + "' style='width:100%'>" +
-                    "<input id='txtItemName" + value.id + "' style='margin-left:10px;' value='"+ value.name +"'/>" +                    
-                    "<input id='txtItemCount_"+ value.id +"' style='width:40px; margin-left:10px;' type='text' value='"+ value.count  +"'>" +
-                    "<input id='cbItemSelected_"+  value.id +"' class='' type='checkbox' onclick='' value="+ value.selected +">"+  
-                    "<a id='deleteItem_" + value.id + "' href='#' style='float:right;'><img src='images/delete.png'></a>" + 
-                    "<a id='updateItem_" + value.id + "' href='#' style='float:right; margin-left:10px;'><img src='images/edit.png'></a>" + 
-                    "</div></li>"; 
+                    html += "<li id='" + value.id + "' class='li-list-general'>" + 
+                        "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
+                            "<input id='txtItemName" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
+                            "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
+                            "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.selected +">"+  
+                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/delete.png'></a>" + 
+                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/edit.png'></a>" + 
+                        "</div>" +
+                    "</li>"; 
                 })
                 
                 items.append(html);
@@ -404,11 +458,13 @@
 
             function updateList(id)
             {
-                var listName = $("#editList_" + id + " input").val();
+                var listName = $("#editList_" + id + " input").val();                
+                var active = $('#cb_' + id).is(":checked");
 
                 var data = {};
                 data.id = id;
                 data.name = listName;
+                data.active = active;
 
                  $.ajax({
                    url: '/updateList',
@@ -501,6 +557,31 @@
                 data.id = id;
                 data.count = count;
                 sendDataToServer('/updateCountItem', data, '', '');
+            }
+
+            function getSelectedListItems(listID)
+            {
+                try {
+                        var data = {};
+                        data.id = listID;
+                        sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
+                        sendDataToServer('/getListItems', data, generateAlist, '');
+                }
+                catch(e){}
+            }
+
+            function setSelectedList(listID)
+            {
+                try {
+                        var activeList = $("#ulLists li");
+                        $.each(activeList, function(index, value){
+                            $(value).removeClass("li-list-general-active").addClass("li-list-general");
+                        })
+
+                        $("#"+ listID).removeClass("li-list-general").addClass("li-list-general-active");
+
+                }
+                catch(e){}
             }
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)

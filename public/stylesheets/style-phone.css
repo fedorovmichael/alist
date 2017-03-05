@@ -1,0 +1,162 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.div-entity-container
+{
+   width:850px;
+   float:left; 
+   border: solid 0px grey; 
+   margin-right:20px;
+}
+
+.div-entity-body
+{
+  background-color:  #fffde7;
+  border: solid 3px #f1c40f; 
+  border-radius:12px;
+}
+
+#aCollapseList
+{
+  display: block;
+  width: 24px;
+}
+
+.show-list-container
+{
+  display: block;
+}
+
+.hide-list-container
+{
+  display: none;
+}
+
+/* general entity */
+
+.div-general-entity-container
+{
+  background-color:#fffde7;
+  border-bottom-color: #5dade2; 
+  border-bottom-width: 1px; 
+  border-bottom-style:solid; 
+  width:840px;
+  min-width:840px;
+  height: 120px;
+}
+
+.div-general-entity-name
+{
+  width:450px;
+  min-width:450px;
+  float: left;
+  margin-left: 10px; 
+  padding-top: 4px;
+}
+
+.input-general-entity-count
+{
+  width:120px;
+  height: 80px;
+  font-size: 36pt;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: solid 3px gray;
+  border-radius: 12px;
+}
+
+.entity-general-button
+{
+  width: 96px;
+  height: 96px;  
+}
+
+.entit-general-fl-right
+{
+  float: right;
+}
+
+.entity-general-name
+{  
+  margin-left:10px;  
+  font-size: 36pt;
+  color:#000;
+  text-align: center;
+}
+
+/* Full Item  */
+.input-cb-count
+{
+  width: 80px;
+  height: 80px;
+}
+/* Item */
+.item-edit-name
+{
+  width: 350px;
+  height: 80px;
+  border: solid 3px grey; 
+  border-radius:12px;
+  font-size: 36pt;
+}
+
+/* list*/
+.li-list-general
+{
+  border: solid 3px grey; 
+  border-radius:12px; 
+  height:120px; 
+  padding-top:6px; 
+  background-color: white;
+}
+
+.li-list-general-active
+{
+  border: solid 3px grey; 
+  border-radius:12px; 
+  height:120px;   
+  background-color: #B9DFF8;
+}
+
+.li-list-general-div 
+{
+  width: 100%;
+  height: 118px;
+  margin-top: 12px;
+}
+
+.list-main-button
+{
+  width:120px;
+  height:96px;
+}
+
+.list-new-input
+{
+  width: 500px;
+  height: 80px;
+  border: solid 3px grey; 
+  border-radius:12px;
+  font-size: 36pt; 
+}
+
+
+
+@media screen and (min-width: 630px) 
+{   
+   /*#divListsContainer {display: block !important;}
+   #aCollapseList { display: none !important;}*/
+}
+
+@media screen and (max-width: 630px) 
+{   
+   /*#divListsContainer {display: none;}
+   #aCollapseList { display: block;}*/
+}
+

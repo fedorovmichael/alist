@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database.js');
+var device = require('express-device');
 
-var arrData = ["item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8", "item9", "item10"];
-var jsonData = '';
+router.use(device.capture());
+
+device.enableDeviceHelpers(router);
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,8 +24,6 @@ router.use('/getFullList', db.select);
 router.post('/getFullList', function(req, res, next) {
   console.log('end send data, json data -> ' + jsonData);
   db.select();
-  // res.json({ data: jsonData });
-  // res.end;
   console.log('end send data');
 });
 
@@ -31,8 +32,6 @@ router.use('/createNewList', db.create);
 router.post('/createNewList', function(req, res, next) {
   console.log("create new list");
   db.create();
-  // res.json({ data: jsonData });
-  // res.end;
   console.log('finish create new list');
 });
 
@@ -41,8 +40,6 @@ router.use('/deleteList', db.delete);
 router.post('/deleteList', function(req, res, next) {
   console.log("delete list");
   db.delete();
-  // res.json({ data: jsonData });
-  // res.end;
   console.log('finish delete');
 });
 
@@ -51,8 +48,6 @@ router.use('/updateList', db.update);
 router.post('/updateList', function(req, res, next) {
   console.log("update list");
   db.update();
-  // res.json({ data: jsonData });
-  // res.end;
   console.log('finish update');
 });
 
@@ -61,10 +56,18 @@ router.use('/getListItems', db.getListItems);
 router.post('/getListItems', function(req, res, next) {
   console.log("get items list");
   db.getListItems();
-  // res.json({ data: jsonData });
-  // res.end;
   console.log('finish get items list');
 });
+
+router.use('/setActiveList', db.setActiveList);
+
+router.post('/setActiveList', function(req, res, next) {
+  console.log("get items list");
+  db.setActiveList();
+  console.log('finish get items list');
+});
+
+//
 
 //ITEMS ===================================================================
 

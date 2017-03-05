@@ -4,7 +4,10 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel="stylesheet", href="/stylesheets/bootstrap-theme.min.css" )
-    link(rel='stylesheet', href='/stylesheets/style.css')        
+    -if(is_desktop)    
+      link(rel='stylesheet', href='/stylesheets/style.css')
+    -if(is_phone)
+      link(rel='stylesheet', href='/stylesheets/style-phone.css')
     script(src='/javascripts/libraries/jquery-3.1.0.min.js')
     script(src='/javascripts/libraries/bootstrap.min.js')
     script(src='/javascripts/code/alist.js')

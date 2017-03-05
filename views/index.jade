@@ -3,26 +3,26 @@ extends layout
 block content
   input(id="hdnSelectedList" type="hidden")
   input(id="hdnEditList" type="hidden")
-  div(class="panel panel-default div-entity-container")
-    a(id="aCollapseList" href="#")
-      img(style="width:24px; height:24px;" src="images/navigate.png")
-    div(id="divListsContainer" class="panel-body div-entity-body")
+  a(id="aCollapseList" href="#")
+    img(class="list-main-button" src="images/navigate.png")
+  div(id="divListsContainer" class="panel panel-default div-entity-container hide-list-container div-margin-right-20")
+    div(class="panel-body div-entity-body")
       form(id="formCreateList" style="margin-bottom:10px;")
-        input(id="txtListName" type="textbox" style="width:240px;")
+        input(id="txtListName" type="textbox" class="list-new-input")
         a(id="aNewList" href="#")
-          img(id="imgNewList" src="images/add.png")
+          img(id="imgNewList" class="entity-general-button" src="images/add.png")
       ul(id="ulLists" class="nav nav-pills nav-stacked")        
   
-  div(id="divItems" class="div-entity-body" style="float:left; width:300px;")
+  div(id="divItems" class="div-entity-body div-entity-container")
     div(class='panel', id="mainMenu")
       ul(class="nav nav-tabs")
         li
-          a(id="aFullList", href="#") Full List
+          a(id="aFullList", href="#", class='entity-general-name') Full List
         li
-          a(id="aSelectedList", href="#") Selected List
+          a(id="aSelectedList", href="#", class='entity-general-name') Selected List
         li
-          a(id="aClearAll" href="#")
-            img(src="images/clear.png")
+          a(id="aClearAll", href="#", class='entit-general-fl-right')
+            img(src="images/clear.png", class='entity-general-button')
     
     div(class="panel", id="containerFullList")
       h3(class="panel-header", style="")
@@ -31,11 +31,11 @@ block content
       h3(class="panel-header")
       button(id='btnRefresh', style='display:none;')
       
-  div(id="divEditItems" class="div-entity-body" style="float:left; display:none; width:400px;")
+  div(id="divEditItems" class="div-entity-body div-entity-container hide-list-container")
     div(class="panel", id="containerEditList")
       h3(class="panel-header", style="")
       form(id="formEditNewItem")
-        input(id="txtEditNewItemName", type="textbox")
+        input(id="txtEditNewItemName", type="textbox", class="list-new-input")
         a(id="aEditNewItem", href="#")
-          img(id="imgEditNewItem", src="images/add.png")
+          img(id="imgEditNewItem", src="images/add.png", class="entity-general-button")
       ul(id="ulEditItems", class="nav nav-pills nav-stacked")

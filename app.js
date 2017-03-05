@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
 var index = require('./routes/index');
 
 // var users = require('./routes/users');
@@ -37,6 +38,7 @@ app.use('/setSelectedAndCountItem', index);
 app.use('/getSelectedItems', index);
 app.use('/updateCountItem', index);
 app.use('/clearSelectedItems', index);
+app.use('/setActiveList', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

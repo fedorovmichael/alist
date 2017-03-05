@@ -11,9 +11,14 @@ a {
 {
    width:300px;
    float:left; 
-   border: solid 0px grey; 
-   margin-right:20px;
+   border: solid 0px grey;   
 }
+
+.div-margin-right-20
+{
+  margin-right:20px;
+}
+
 
 .div-entity-body
 {
@@ -24,7 +29,8 @@ a {
 
 #aCollapseList
 {
-  display: none;
+  display: block;
+  width: 24px;
 }
 
 .show-list-container
@@ -37,15 +43,102 @@ a {
   display: none;
 }
 
+/* general entity */
+
+.div-general-entity-container
+{
+  background-color:#fffde7;
+  border-bottom-color: #5dade2; 
+  border-bottom-width: 1px; 
+  border-bottom-style:solid; 
+  width:297px;
+  min-width:297px;
+}
+
+.div-general-entity-name
+{
+  width:150px;
+  min-width:150px;
+  float: left;
+  margin-left: 10px; 
+  padding-top: 4px;
+}
+
+.input-general-entity-count
+{
+  width:40px;
+}
+
+
+/* Full Item  */
+/* Item */
+
+/* list */
+.li-list-general
+{
+  border: solid 1px grey; 
+  border-radius:6px; 
+  height:40px;   
+  background-color:white;
+}
+
+.li-list-general :hover
+{  
+  background-color:#B9DFF8;
+}
+
+.li-list-general-active
+{
+  border: solid 1px grey; 
+  border-radius:6px; 
+  height:38px;     
+  background-color:#B9DFF8;
+}
+
+.li-list-general-div
+{
+  width: 295px;
+  height: 38px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.entity-general-name
+{  
+  margin-left:10px;
+}
+
+.entity-general-button
+{
+  width: 24px;
+  height: 24px;  
+}
+
+.entit-general-fl-right
+{
+  float: right;
+}
+
+.list-main-button
+{
+  width:60px;
+  height:48px;
+}
+
+.list-new-input
+{
+  width: 220px;  
+}
+
 @media screen and (min-width: 630px) 
 {   
-   #divListsContainer {display: block !important;}
-   #aCollapseList { display: none !important;}
+   /*#divListsContainer {display: block !important;}
+   #aCollapseList { display: none !important;}*/
 }
 
 @media screen and (max-width: 630px) 
 {   
-   #divListsContainer {display: none;}
-   #aCollapseList { display: block;}
+   /*#divListsContainer {display: none;}
+   #aCollapseList { display: block;}*/
 }
 

@@ -161,8 +161,15 @@ db.update = function (req, res, next)
 
     var id = req.body.id;
     var name = req.body.name;
+    var active = req.body.active;
+    var refreshActive = "";
     
-    var queryDB = "UPDATE list SET name = '"+ name +"' WHERE id = '" + id + "'";
+    if(active)
+    {
+        refreshActive = "UPDATE list SET active = false;";
+    }
+
+    var queryDB = refreshActive + " UPDATE list SET name = '"+ name +"', active = "+ active +" WHERE id = '" + id + "';";
 
     console.log("query db -> " + queryDB);
 
@@ -479,5 +486,42 @@ db.clearSelectedItems = function (req, res, next)
     });   
 }
 
+
+db.setActiveList = function (req, res, next)
+{
+    console.log("start update");    
+    
+    console.log("params ->  id: " + req.body.id);
+    console.log("params ->  selected: " + req.body.selected);
+
+    var id = req.body.id; 
+    var selected = req.body.selected;
+    
+    var queryDB = "UPDATE list SET active = " + selected +
+    " WHERE id = '" + id + "'";
+
+    console.log("query db -> " + queryDB);
+
+    pool.connect(function(err, client, done){
+        if(err)
+        {
+            console.error("connection error -> " + err);
+        }
+        else
+        {
+            console.log("success connec to db");
+        }
+
+        client.query(queryDB, function(err, result){
+            done();
+            if(err)
+            {
+                console.error("send query error -> ", err);
+            }
+            console.log("retrieved rows -> ", result);
+            res.json({data: result});
+        });
+    });   
+}
 
 module.exports = db;
