@@ -91,6 +91,14 @@
                     $("#divListsContainer").slideToggle();                   
                 });
 
+                $("body").on("click", "a[id^='updateItem_']", function(event){             
+                    updateItem(this.id);
+                });
+
+                $("body").on("click", "a[id^='deleteItem_']", function(event){                   
+                    removeItem(this.id);
+                });
+
                                                 
             });          
             
@@ -405,7 +413,7 @@
                 $.each(arrListItems, function(index, value){
                     html += "<li id='" + value.id + "' class='li-list-general'>" + 
                         "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
-                            "<input id='txtItemName" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
+                            "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
                             "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
                             "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.selected +">"+  
                             "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/delete.png'></a>" + 
@@ -583,6 +591,61 @@
                 }
                 catch(e){}
             }
+
+            function removeItem(fullID)
+            {
+                try {
+                    
+                    var id = fullID.split('_')[1];
+                    var data = {};
+                    data.id = id;
+
+                    sendDataToServer('/deleteItem', data, removeItemSuccess, '' );                   
+                    
+                } catch (error) {
+                    console.error("removeItem: " + error);
+                }
+            }
+
+            function removeItemSuccess(response)
+            {
+                try {
+                    var id = $("#hdnEditList").val();
+                    editList(id);
+                } catch (error) {
+                    console.error("removeItemSuccess: " + error);
+                }
+            }
+
+            function updateItem(fullID)
+            {
+                try {
+                    
+                    var id = fullID.split('_')[1];
+                    var data = {};
+                    data.id = id;
+                    data.name = $('#txtItemName_' + id).val();
+                    data.count = $('#txtItemCount_' + id).val();
+                    data.selected = $('#cbItemSelected_' + id).is(":checked"); 
+
+                    sendDataToServer('/updateItem', data, updateItemSuccess, '' );                   
+                    
+                } catch (error) {
+                    console.error("updateItem: " + error);
+                }
+            }
+
+            function updateItemSuccess(response)
+            {
+                try {
+                    var id = $("#hdnEditList").val();
+                    editList(id);
+                } catch (error) {
+                    console.error("updateItemSuccess: " + error);
+                }
+            }
+
+
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)
             {

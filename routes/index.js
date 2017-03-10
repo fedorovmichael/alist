@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../database.js');
+var db = require('../db/database.js');
 var device = require('express-device');
 
 router.use(device.capture());
