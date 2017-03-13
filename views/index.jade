@@ -4,13 +4,13 @@ block content
   input(id="hdnSelectedList" type="hidden")
   input(id="hdnEditList" type="hidden")
   a(id="aCollapseList" href="#")
-    img(class="list-main-button" src="images/navigate.png")
+    img(class="list-main-button" src="images/navigate.png", title='Show lists')
   div(id="divListsContainer" class="panel panel-default div-entity-container hide-list-container div-margin-right-20")
     div(class="panel-body div-entity-body")
       form(id="formCreateList" style="margin-bottom:10px;")
         input(id="txtListName" type="textbox" class="list-new-input")
         a(id="aNewList" href="#")
-          img(id="imgNewList" class="entity-general-button" src="images/add.png")
+          img(id="imgNewList" class="entity-general-button" src="images/add.png", title='add list')
       ul(id="ulLists" class="nav nav-pills nav-stacked")        
   
   div(id="divItems" class="div-entity-body div-entity-container")
@@ -22,7 +22,7 @@ block content
           a(id="aSelectedList", href="#", class='entity-general-name') Selected List
         li
           a(id="aClearAll", href="#", class='entit-general-fl-right')
-            img(src="images/clear.png", class='entity-general-button')
+            img(src="images/clear.png", class='entity-general-button' title="clear selection")
     
     div(class="panel", id="containerFullList")
       h3(class="panel-header", style="")
@@ -37,5 +37,5 @@ block content
       form(id="formEditNewItem")
         input(id="txtEditNewItemName", type="textbox", class="list-new-input")
         a(id="aEditNewItem", href="#")
-          img(id="imgEditNewItem", src="images/add.png", class="entity-general-button")
+          img(id="imgEditNewItem", src="images/add.png", class="entity-general-button", title='add item')
       ul(id="ulEditItems", class="nav nav-pills nav-stacked")

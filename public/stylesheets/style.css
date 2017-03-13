@@ -57,11 +57,12 @@ a {
 
 .div-general-entity-name
 {
-  width:150px;
-  min-width:150px;
-  float: left;
+  width:210;
+  min-width:210px;
+  /*float: left;*/
   margin-left: 10px; 
   padding-top: 4px;
+  height: 40px;
 }
 
 .input-general-entity-count
@@ -69,9 +70,92 @@ a {
   width:40px;
 }
 
+/* Item menu*/
+.nav-tabs > li
+{
+  text-align: center;
+}
+.nav-tabs > li > a
+{
+  width: 120px;
+  margin: 0px;
+}
+
+.nav-tabs > li > a:active, .nav-tabs > li > a:hover, .nav-tabs > li > a:focus 
+{
+  border: solid 1px grey;    
+  background-color:#B9DFF8;
+  color:#000;
+}
+
+#aClearAll
+{
+  width:55px;
+}
+
+.item-menu-active
+{
+  border: solid 1px grey;    
+  background-color:#B9DFF8;
+  color:#000;
+}
 
 /* Full Item  */
+.div-full-entity-name
+{
+  width:210px;
+  min-width:210px;
+  /*float: left;*/
+  margin-left: 10px; 
+  padding-top: 4px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.input-cb-count
+{
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.span-full-item-select
+{
+  margin-right: 5px;  
+}
+
+.span-full-item-count
+{
+  margin-right: 5px;  
+}
+
+/* Selected Item  */
+.div-selected-entity-name
+{
+  width:190px;
+  min-width:190px;
+  /*float: left;*/
+  margin-left: 10px; 
+  padding-top: 4px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.a-button-complite
+{
+  margin-right:5px; 
+  margin-top: 5px;
+}
+
+.a-button-delete
+{
+  margin-top: 5px;
+}
+
 /* Item */
+.panel > div:hover
+{
+  background-color:#B9DFF8;
+}
 
 /* list */
 .li-list-general
@@ -106,6 +190,7 @@ a {
 .entity-general-name
 {  
   margin-left:10px;
+  color: #000;
 }
 
 .entity-general-button

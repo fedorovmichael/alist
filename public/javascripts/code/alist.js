@@ -6,6 +6,7 @@
             
                 $("#aFullList").on("click", function(event){                                        
                     event.preventDefault();
+                    itemMenuHandler("aFullList");
                     var id = $('#hdnSelectedList').val();
                     var data = {};
                     data.id = id;
@@ -14,7 +15,8 @@
                 
                 $("#aSelectedList").on("click", function(event){
                     event.preventDefault();
-                    var id = $('#hdnSelectedList').val();
+                    itemMenuHandler("aSelectedList");
+                    var id = $('#hdnSelectedList').val();                    
                     var data = {};
                     data.id = id;
                     sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
@@ -56,7 +58,7 @@
                     var id = (this.id).split('_')[1];
                     //getListItems(id.split('_')[1], generateAlist);
                     $('#hdnSelectedList').val(id);
-
+                    itemMenuHandler("aSelectedList");
                     getSelectedListItems(id);
                     setSelectedList(id); 
                 });
@@ -70,6 +72,7 @@
                     var id = (this.id).split('_')[1];                                        
                     if(event.target.nodeName == 'DIV')
                     {
+                        itemMenuHandler("aSelectedList");
                         $('#hdnSelectedList').val(id);
                         getSelectedListItems(id);
                         setSelectedList(id);
@@ -221,9 +224,9 @@
                     var fullCountId = "count_" + id;
                     var cbSelected = item.selected == true ? "checked" : ""; 
                     html += "<div class='form-inline div-general-entity-container'>" +
-                            "<div class='form-group div-general-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                            "<span><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'>" +
-                            "<input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+ 
+                            "<div class='form-group div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +
+                            "<span class='entit-general-fl-right span-full-item-select'><input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+
+                            "<span class='entit-general-fl-right span-full-item-count'><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/></span>" +
                             "</div>";
                 });
                 
@@ -254,10 +257,10 @@
                     var fullCountId = "count_" + id;
                     var selectedCountId = generateId();
                     html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
-                            "<div class='form-group div-general-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/>" +
-                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right' ><img src='images/complete.png' class='entity-general-button'/></a>"+
-                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right'><img src='images/delete.png' class='entity-general-button'/></a>"+  
+                            "<div class='form-group div-selected-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
+                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='images/complete.png' class='entity-general-button' title='complite item'/></a>"+
+                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
                             "</div>";
                 });
                 
@@ -388,19 +391,20 @@
                     html += "<li id='" + value.id + "' class='"+ activeClass +"'>" +
                         "<div id='display_" + value.id + "' class='li-list-general-div'>" +
                             "<a id='list_" + value.id + "' href='#' class='entity-general-name'>" + value.name + "</a>" +
-                            "<a id='delete_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/delete.png'></a>" + 
-                            "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png'></a>" + 
+                            "<a id='delete_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/delete.png' title='delete list'></a>" + 
+                            "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png' title='edit list'></a>" + 
                         "</div>"+
                         "<div id='editList_" + value.id + "' class='li-list-general-div' style='display: none;'>" +
                             "<input id='" + value.id + "' class='list-new-input' value='"+ value.name +"'/>" +
                             "<input id='cb_"+ value.id +"' class='input-cb-count' type='checkbox' onclick='setListActiveCheckbox(this, this.id);' value='' "+ cbSelected+ ">" +                    
-                            "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png'></a>" + 
+                            "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png' title='update list'></a>" + 
                         "</div>"+
                     "</li>"; 
                 })
                 
                 lists.append(html);
                 getSelectedListItems(activeID);
+                itemMenuHandler("aSelectedList");
 
             }
 
@@ -411,13 +415,16 @@
                 items.empty();
 
                 $.each(arrListItems, function(index, value){
+
+                    var cbSelected = value.selected == true ? "checked" : "";
+
                     html += "<li id='" + value.id + "' class='li-list-general'>" + 
                         "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
                             "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
                             "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
-                            "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.selected +">"+  
-                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/delete.png'></a>" + 
-                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/edit.png'></a>" + 
+                            "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.name +" " + cbSelected + ">"+  
+                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/delete.png' title='delete item'></a>" + 
+                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/edit.png' title='update item'></a>" + 
                         "</div>" +
                     "</li>"; 
                 })
@@ -572,8 +579,9 @@
                 try {
                         var data = {};
                         data.id = listID;
-                        sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
                         sendDataToServer('/getListItems', data, generateAlist, '');
+                        sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
+                        
                 }
                 catch(e){}
             }
@@ -645,7 +653,17 @@
                 }
             }
 
-
+            function itemMenuHandler(activeButtonID)
+            {
+                try {
+                    $('#aSelectedList').removeClass('item-menu-active');
+                    $('#aFullList').removeClass('item-menu-active');
+                    $("#"+ activeButtonID).addClass('item-menu-active');
+                    
+                } catch (error) {
+                    console.error("itemMenuHandler error: " + error);
+                }
+            }
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)
             {
