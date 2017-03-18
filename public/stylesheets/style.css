@@ -53,6 +53,7 @@ a {
   border-bottom-style:solid; 
   width:297px;
   min-width:297px;
+  min-height: 30px;
 }
 
 .div-general-entity-name
@@ -68,6 +69,8 @@ a {
 .input-general-entity-count
 {
   width:40px;
+  vertical-align: top;
+  margin-top: 5px;
 }
 
 /* Item menu*/
@@ -110,6 +113,7 @@ a {
   padding-top: 4px;
   height: 30px;
   margin-top: 5px;
+  display: inline-block;
 }
 
 .input-cb-count
@@ -136,7 +140,7 @@ a {
   /*float: left;*/
   margin-left: 10px; 
   padding-top: 4px;
-  height: 30px;
+  height: auto;
   margin-top: 5px;
 }
 

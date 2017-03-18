@@ -48,7 +48,7 @@ a {
   border-bottom-style:solid; 
   width:840px;
   min-width:840px;
-  height: 120px;
+  min-height: 120px;
 }
 
 
@@ -61,7 +61,7 @@ a {
   margin-right: 5px;
   border: solid 3px gray;
   border-radius: 12px;
-  text-align: center;
+  vertical-align: top; 
 }
 
 .entity-general-button
@@ -81,6 +81,7 @@ a {
   font-size: 36pt;
   color:#000;
   text-align: center;
+  display: inline;
 }
 
 /* Item menu*/
@@ -107,6 +108,13 @@ a {
   width:150px;
 }
 
+.item-menu-active
+{
+  border: solid 1px grey;    
+  background-color:#B9DFF8;
+  color:#000;
+}
+
 /* Full Item  */
 .input-cb-count
 {
@@ -120,9 +128,11 @@ a {
 {
   width:600px;
   min-width:600px;
-  float: left;
+  /*float: left;*/
   margin-left: 10px;  
   margin-top: 25px;
+  display: inline-block;
+  height: auto;
 }
 
 .span-full-item-select
@@ -166,7 +176,7 @@ a {
 .item-edit-name
 {
   width: 350px;
-  height: 80px;
+  /*height: 80px;*/
   border: solid 3px grey; 
   border-radius:12px;
   font-size: 36pt;

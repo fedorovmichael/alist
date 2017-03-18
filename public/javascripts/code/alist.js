@@ -1,8 +1,14 @@
-            
+            var fullList = [];            
+            var selectedList = [];
+            var listItems = [];//["item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8", "item9", "item10"];
+            var arrLists = [];
+            var arrListItems = [];
+            var socket = '';             
             
             $(document).ready(function(){
-                fillFullList();    
-                //generateAlist();
+                //socket
+                socket = io();//.connect('http://localhost:4000');
+                fillFullList();
             
                 $("#aFullList").on("click", function(event){                                        
                     event.preventDefault();
@@ -36,7 +42,18 @@
                 });
 
                 $("body").on("click", "#containerSelectedList a[id^='btnComplite_']", function(event){                   
+                    var scrollPosition = $(document).scrollTop(); 
+                    var data = {};
+                    data.itemID = this.id;
+                    data.listID = '';
+                    data.command = 'complite';                
+                    socket.emit('recCommand', data);                    
                     btnCompliteHandler(this, this.id);
+
+                    $(document).scrollTop(scrollPosition);
+                    $(window).scrollTop(scrollPosition);
+                    $("html").scrollTop(scrollPosition);
+                    return false;
                 });
 
                $("body").on("click", "a[id^='delete_']", function(event){                   
@@ -102,14 +119,19 @@
                     removeItem(this.id);
                 });
 
+                socket.on('reqCommand', function(data){
+                    if(data.command == 'complite')
+                    {
+                        btnCompliteHandler(null, data.itemID);
+                    }
+                    if(data.command == 'uncomplite')
+                    {
+                        unCompliteHandler(data.itemID);
+                    }
+                })               
                                                 
-            });          
-            
-            var fullList = [];            
-            var selectedList = [];
-            var listItems = [];//["item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8", "item9", "item10"];
-            var arrLists = [];
-            var arrListItems = []; 
+            });
+
 
            function fillFullList()
            {
@@ -223,8 +245,8 @@
                     var fullNameId = "name_" + id;
                     var fullCountId = "count_" + id;
                     var cbSelected = item.selected == true ? "checked" : ""; 
-                    html += "<div class='form-inline div-general-entity-container'>" +
-                            "<div class='form-group div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +
+                    html += "<div class='form-inline1 div-general-entity-container'>" +
+                            "<div class='form-group1 div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"' title='"+ item.name +"' data-toggle='tooltip'>"+ item.name +"</span></div>" +
                             "<span class='entit-general-fl-right span-full-item-select'><input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+
                             "<span class='entit-general-fl-right span-full-item-count'><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/></span>" +
                             "</div>";
@@ -285,16 +307,21 @@
 
             function btnCompliteHandler(obj, id)
             {
-                var itemId = id.split("_")[1];                
-                           
+                var itemId = id.split("_")[1];                               
+                         
                 $('#containerSelectedList #count_' + itemId).prop('readonly', true);                
                 $('#btnDelete_' + itemId).attr('disabled', true);
                 $('#btnComplite_' + itemId).attr('disabled', true);
                 $('#div_' + itemId).css("opacity", "0.2");
 
                 $('#div_' + itemId).on('click', function(){
+                    var data = {};
+                    data.itemID = itemId;
+                    data.listID = '';
+                    data.command = 'uncomplite';                
+                    socket.emit('recCommand', data);
                     unCompliteHandler(itemId);
-                });
+                });                
             }
 
             function unCompliteHandler(id)
@@ -302,7 +329,7 @@
                 $('#containerSelectedList #count_' + id).prop('readonly', false);                
                 $('#btnDelete_' + id).removeAttr('disabled');
                 $('#btnComplite_' + id).removeAttr('disabled');
-                $('#div_' + id).css("opacity", "1");
+                $('#div_' + id).css("opacity", "1");   
             }
 
             function removeFromArray(arrayInput, id)
@@ -663,6 +690,18 @@
                 } catch (error) {
                     console.error("itemMenuHandler error: " + error);
                 }
+            }
+
+            function nameLength(name)
+            {
+                var value = '';
+                var arrValue = name.split(' ');
+
+                for(var i = 0; i < arrValue.lenght; i++)
+                {
+                    
+                }
+
             }
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)
