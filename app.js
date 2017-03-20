@@ -39,6 +39,7 @@ app.use('/getSelectedItems', index);
 app.use('/updateCountItem', index);
 app.use('/clearSelectedItems', index);
 app.use('/setActiveList', index);
+app.use('/updateCompleteValue', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

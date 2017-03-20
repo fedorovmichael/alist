@@ -127,6 +127,12 @@ router.post('/clearSelectedItems', function(req, res, next) {
   console.log('finish clear selected items');
 });
 
+router.use('/updateCompleteValue', db.updateCompleteValue);
 
+router.post('/updateCompleteValue', function(req, res, next) {
+  console.log("update complete value");
+  db.updateCompleteValue();
+  console.log('finish update complete value');
+});
 
 module.exports = router;

@@ -3,6 +3,7 @@ extends layout
 block content
   input(id="hdnSelectedList" type="hidden")
   input(id="hdnEditList" type="hidden")
+  input(id="hdnCompleteItem" type="hidden")
   a(id="aCollapseList" href="#")
     img(class="list-main-button" src="images/navigate.png", title='Show lists')
   div(id="divListsContainer" class="panel panel-default div-entity-container hide-list-container div-margin-right-20")
@@ -25,7 +26,7 @@ block content
             img(src="images/clear.png", class='entity-general-button' title="clear selection")
     
     div(class="panel", id="containerFullList")
-      h3(class="panel-header", style="")
+      h3(class="panel-header", style="") header full list
 
     div(class="panel", id="containerSelectedList")
       h3(class="panel-header")

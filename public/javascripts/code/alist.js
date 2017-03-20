@@ -41,18 +41,19 @@
                     btnDeleteHandler(this, this.id);
                 });
 
-                $("body").on("click", "#containerSelectedList a[id^='btnComplite_']", function(event){                   
-                    var scrollPosition = $(document).scrollTop(); 
-                    var data = {};
-                    data.itemID = this.id;
-                    data.listID = '';
-                    data.command = 'complite';                
-                    socket.emit('recCommand', data);                    
-                    btnCompliteHandler(this, this.id);
+                $("body").on("click", "#containerSelectedList a[id^='btnComplite_']", function(event){              
+                    var dataSocket = {}, dataUpdate = {};
+                    $("#hdnCompleteItem").val('');
+                    $("#hdnCompleteItem").val(this.id);
+                    dataSocket.itemID = this.id;
+                    dataSocket.listID = '';
+                    dataSocket.command = 'complite';                
+                    socket.emit('recCommand', dataSocket);
 
-                    $(document).scrollTop(scrollPosition);
-                    $(window).scrollTop(scrollPosition);
-                    $("html").scrollTop(scrollPosition);
+                    dataUpdate.id = this.id.split('_')[1];
+                    dataUpdate.complete = true;
+                    sendDataToServer('/updateCompleteValue', dataUpdate, completeItemSuccess, '');
+
                     return false;
                 });
 
@@ -235,7 +236,7 @@
 
             function createHTMLFullList(arrListItems)
             {
-              var html = '';
+              var html = '<h6 style="margin-left:5px;">Count items: '+ arrListItems.length +' </h6>';
               $("#containerFullList").empty(); 
               $("#containerFullList").html('');             
 
@@ -268,7 +269,8 @@
 
             function createHTMLSelectedList(listItems)
             {            
-                var html = '';
+                var html = '<h6 style="margin-left:5px;">Count items: '+ listItems.length +' </h6>';
+                var arrCompliteItems = [];
                 $("#containerSelectedList").empty();
                 $("#containerSelectedList").html('');                
 
@@ -284,9 +286,17 @@
                             "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='images/complete.png' class='entity-general-button' title='complite item'/></a>"+
                             "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
                             "</div>";
+                    if(item.complete)
+                    {
+                        arrCompliteItems.push('btnComplite_'+ id);
+                    }
                 });
                 
                 $("#containerSelectedList").html(html);
+
+                $.each(arrCompliteItems, function(i, item){
+                    btnCompliteHandler(null, item);
+                });
             }
 
             function btnDeleteHandler(obj, id)
@@ -315,12 +325,17 @@
                 $('#div_' + itemId).css("opacity", "0.2");
 
                 $('#div_' + itemId).on('click', function(){
-                    var data = {};
+                    $("#hdnCompleteItem").val((this.id).split("_")[1]);
+                    var data = {}, dataUpdate = {};
                     data.itemID = itemId;
                     data.listID = '';
                     data.command = 'uncomplite';                
                     socket.emit('recCommand', data);
-                    unCompliteHandler(itemId);
+
+                    dataUpdate.id = itemId;
+                    dataUpdate.complete = false;
+                    sendDataToServer('/updateCompleteValue', dataUpdate, unCompleteItemSuccess, '');
+                    
                 });                
             }
 
@@ -692,17 +707,28 @@
                 }
             }
 
-            function nameLength(name)
+            function completeItemSuccess(response)
             {
-                var value = '';
-                var arrValue = name.split(' ');
-
-                for(var i = 0; i < arrValue.lenght; i++)
-                {
-                    
+                try {
+                    var id = $("#hdnCompleteItem").val();
+                    btnCompliteHandler(null, id);
+                    $("#hdnCompleteItem").val('');
+                } catch (error) {
+                    console.error("completeItemSuccess: " + error);
                 }
-
             }
+
+            function unCompleteItemSuccess(response)
+            {
+                try {
+                    var id = $("#hdnCompleteItem").val();
+                    unCompliteHandler(id);
+                    $("#hdnCompleteItem").val('');
+                } catch (error) {
+                    console.error("completeItemSuccess: " + error);
+                }
+            }
+            //
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)
             {
