@@ -107,6 +107,23 @@ db.getSelectedItems = function (req, res, next)
     getMultipleResponse(res, queryDB);
 }
 
+db.setActiveList = function (req, res, next)
+{
+    console.log("start update");    
+    
+    console.log("params ->  id: " + req.body.id);
+    console.log("params ->  selected: " + req.body.selected);
+
+    var id = req.body.id; 
+    var selected = req.body.selected;
+    
+    var queryDB = "UPDATE list SET active = " + selected +
+    " WHERE id = '" + id + "'";
+
+    console.log("query db -> " + queryDB);
+    getSingleResponse(res, queryDB);   
+}
+
 //ITEMS ===================================================================
 
 db.createItem = function (req, res, next)
@@ -206,24 +223,23 @@ db.clearSelectedItems = function (req, res, next)
     " WHERE list_id = '" + id + "'";
 
     console.log("query db -> " + queryDB);
-    getSingleResponse(res, queryDB);}
+    getSingleResponse(res, queryDB);
+}
 
-
-db.setActiveList = function (req, res, next)
+db.updateCompleteValue = function (req, res, next)
 {
     console.log("start update");    
     
     console.log("params ->  id: " + req.body.id);
-    console.log("params ->  selected: " + req.body.selected);
+    console.log("params ->  complete: " + req.body.complete);    
 
-    var id = req.body.id; 
-    var selected = req.body.selected;
+    var id = req.body.id;   
+    var complete = req.body.complete;   
     
-    var queryDB = "UPDATE list SET active = " + selected +
-    " WHERE id = '" + id + "'";
+    var queryDB = "UPDATE list_items SET complete = " + complete + " WHERE id = '" + id + "'";
 
     console.log("query db -> " + queryDB);
-    getSingleResponse(res, queryDB);   
+    getSingleResponse(res, queryDB);
 }
 
 function getSingleResponse(res, queryDB)
