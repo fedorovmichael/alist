@@ -228,7 +228,7 @@
 
             function createHTMLFullList(arrListItems)
             {
-              var html = '<p class="count-items">Count items: '+ arrListItems.length +' </p>';
+              var html = '<p class="count-items">Items: '+ arrListItems.length +' </p>';
               $("#containerFullList").empty(); 
               $("#containerFullList").html('');             
 
@@ -261,7 +261,7 @@
 
             function createHTMLSelectedList(listItems)
             {            
-                var html = '<p id="pSelectedCount" class="count-items">Count items: '+ listItems.length +' </p>';
+                var html = '<p id="pSelectedCount" class="count-items"><span id="spanSelectedCount">Items: '+ listItems.length +'</span>&nbsp;&nbsp;<span id="spanSelectedCountComplete"></span></p>';
                 var arrCompliteItems = [];
                 $("#containerSelectedList").empty();
                 $("#containerSelectedList").html('');                
@@ -285,7 +285,7 @@
                 });
                 
                 $("#containerSelectedList").html(html);
-
+                $("#spanSelectedCountComplete").text("Completed: " + arrCompliteItems.length);
                 $.each(arrCompliteItems, function(i, item){
                     btnCompliteHandler(null, item);
                 });
@@ -295,6 +295,14 @@
             {                
                 var itemId = id.split("_")[1];
                 var data = {};
+                
+                var isComplete = $("#"+ id).attr("disabled");
+
+                if(isComplete)
+                {
+                    return;
+                }
+
                 data.id = itemId;
                 data.selected = false;
                 data.count = $("#containerSelectedList input[id^='count_"+ itemId +"']").val();
