@@ -225,6 +225,12 @@ a {
   width: 220px;  
 }
 
+.count-items
+{
+  margin-left:5px;
+  font-size: 12pt;
+}
+
 @media screen and (min-width: 630px) 
 {   
    /*#divListsContainer {display: block !important;}

@@ -228,7 +228,7 @@
 
             function createHTMLFullList(arrListItems)
             {
-              var html = '<h6 style="margin-left:5px;">Count items: '+ arrListItems.length +' </h6>';
+              var html = '<p class="count-items">Count items: '+ arrListItems.length +' </p>';
               $("#containerFullList").empty(); 
               $("#containerFullList").html('');             
 
@@ -261,7 +261,7 @@
 
             function createHTMLSelectedList(listItems)
             {            
-                var html = '<h6 style="margin-left:5px;">Count items: '+ listItems.length +' </h6>';
+                var html = '<p id="pSelectedCount" class="count-items">Count items: '+ listItems.length +' </p>';
                 var arrCompliteItems = [];
                 $("#containerSelectedList").empty();
                 $("#containerSelectedList").html('');                
@@ -303,7 +303,8 @@
 
                 removeFromArray(selectedList, itemId);
                 removeSelecttion(fullList, itemId);
-                $('#div_'+ itemId).remove();                
+                $('#div_'+ itemId).remove();
+                $('#pSelectedCount').text('Count items: '+ selectedList.length);                
             }
 
             function btnCompliteHandler(obj, id)
@@ -704,6 +705,10 @@
                     var id = $("#hdnCompleteItem").val();
                     btnCompliteHandler(null, id);
                     $("#hdnCompleteItem").val('');
+                    var id = $('#hdnSelectedList').val();                    
+                    var data = {};
+                    data.id = id;
+                    sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
                 } catch (error) {
                     console.error("completeItemSuccess: " + error);
                 }
@@ -715,10 +720,16 @@
                     var id = $("#hdnCompleteItem").val();
                     unCompliteHandler(id);
                     $("#hdnCompleteItem").val('');
+                    var id = $('#hdnSelectedList').val();                    
+                    var data = {};
+                    data.id = id;
+                    sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
                 } catch (error) {
                     console.error("completeItemSuccess: " + error);
                 }
             }
+
+            
             //
 
             function sendDataToServer(path, data, callbackSuccess, callbackError)
