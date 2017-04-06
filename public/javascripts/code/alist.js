@@ -1,6 +1,6 @@
             var fullList = [];            
             var selectedList = [];
-            var listItems = [];//["item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8", "item9", "item10"];
+            var listItems = [];
             var arrLists = [];
             var arrListItems = [];
             var socket = '';             
@@ -16,7 +16,7 @@
                     var id = $('#hdnSelectedList').val();
                     var data = {};
                     data.id = id;
-                    sendDataToServer('/getListItems', data, generateAlist, '');                    
+                    sendDataToServer('/lists/getListItems', data, generateAlist, '');                    
                 });
                 
                 $("#aSelectedList").on("click", function(event){
@@ -25,15 +25,16 @@
                     var id = $('#hdnSelectedList').val();                    
                     var data = {};
                     data.id = id;
-                    sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
+                    sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
                 });
 
                 $("#aClearAll").on("click", function(event){
                     event.preventDefault();
+                    itemMenuHandler("aFullList");
                     var id = $('#hdnSelectedList').val();
                     var data = {};
                     data.id = id;
-                    sendDataToServer('/clearSelectedItems', data, clearAllSelectedItems, '');
+                    sendDataToServer('/lists/clearSelectedItems', data, clearAllSelectedItems, '');
                 });
 
                 
@@ -52,7 +53,7 @@
 
                     dataUpdate.id = this.id.split('_')[1];
                     dataUpdate.complete = true;
-                    sendDataToServer('/updateCompleteValue', dataUpdate, completeItemSuccess, '');
+                    sendDataToServer('/lists/updateCompleteValue', dataUpdate, completeItemSuccess, '');
 
                     return false;
                 });
@@ -137,7 +138,7 @@
            function fillFullList()
            {
                 $.ajax({
-                   url: '/getFullList',
+                   url: '/lists/getFullList',
                    contentType: 'application/json',
                    type: 'POST',
                    success: function(response)
@@ -182,9 +183,8 @@
                 data.id = id;
                 data.selected = isChecked;
                 data.count = count;
-
-                var path = '/setSelectedAndCountItem';
-                sendDataToServer(path, data, '', '');
+                
+                sendDataToServer('/lists/setSelectedAndCountItem', data, '', '');
                                 
                 if(existsInArray(selectedList, id) == false && isChecked){                
                    selectedList.push({"name": name, "count": count, "select": true, "id": id});                                                   
@@ -203,14 +203,6 @@
 
             function setListActiveCheckbox(obj, fullID)
             {
-                // var isChecked = $('#' + fullID).is(":checked");
-                // var id = fullID.split('_')[1]; 
-                // var data = {};
-                // data.id = id;
-                // data.selected = isChecked;
-                
-                // var path = '/setActiveList';
-                // sendDataToServer(path, data, '', '');
                 var liLists = $("#ulLists li");
 
                 $.each(liLists, function(index, value){
@@ -283,8 +275,8 @@
                     html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
                             "<div class='form-group div-selected-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
                             "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
-                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='images/complete.png' class='entity-general-button' title='complite item'/></a>"+
-                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
+                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='/images/complete.png' class='entity-general-button' title='complite item'/></a>"+
+                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='/images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
                             "</div>";
                     if(item.complete)
                     {
@@ -306,9 +298,8 @@
                 data.id = itemId;
                 data.selected = false;
                 data.count = $("#containerSelectedList input[id^='count_"+ itemId +"']").val();
-
-                var path = '/setSelectedAndCountItem';
-                sendDataToServer(path, data, '', '');
+               
+                sendDataToServer('/lists/setSelectedAndCountItem', data, '', '');
 
                 removeFromArray(selectedList, itemId);
                 removeSelecttion(fullList, itemId);
@@ -334,7 +325,7 @@
 
                     dataUpdate.id = itemId;
                     dataUpdate.complete = false;
-                    sendDataToServer('/updateCompleteValue', dataUpdate, unCompleteItemSuccess, '');
+                    sendDataToServer('/lists/updateCompleteValue', dataUpdate, unCompleteItemSuccess, '');
                     
                 });                
             }
@@ -399,7 +390,7 @@
                 data.id = generateId();
 
                 $.ajax({
-                   url: '/createNewList',
+                   url: '/lists/createNewList',
                    contentType: 'application/json',
                    type: 'POST',
                    data: JSON.stringify(data),
@@ -433,13 +424,13 @@
                     html += "<li id='" + value.id + "' class='"+ activeClass +"'>" +
                         "<div id='display_" + value.id + "' class='li-list-general-div'>" +
                             "<a id='list_" + value.id + "' href='#' class='entity-general-name'>" + value.name + "</a>" +
-                            "<a id='delete_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/delete.png' title='delete list'></a>" + 
-                            "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png' title='edit list'></a>" + 
+                            "<a id='delete_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/delete.png' title='delete list'></a>" + 
+                            "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='edit list'></a>" + 
                         "</div>"+
                         "<div id='editList_" + value.id + "' class='li-list-general-div' style='display: none;'>" +
                             "<input id='" + value.id + "' class='list-new-input' value='"+ value.name +"'/>" +
                             "<input id='cb_"+ value.id +"' class='input-cb-count' type='checkbox' onclick='setListActiveCheckbox(this, this.id);' value='' "+ cbSelected+ ">" +                    
-                            "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='images/edit.png' title='update list'></a>" + 
+                            "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update list'></a>" + 
                         "</div>"+
                     "</li>"; 
                 })
@@ -465,8 +456,8 @@
                             "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
                             "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
                             "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.name +" " + cbSelected + ">"+  
-                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/delete.png' title='delete item'></a>" + 
-                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img img class='entity-general-button' src='images/edit.png' title='update item'></a>" + 
+                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/delete.png' title='delete item'></a>" + 
+                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update item'></a>" + 
                         "</div>" +
                     "</li>"; 
                 })
@@ -480,7 +471,7 @@
                 data.id = id;
 
                  $.ajax({
-                   url: '/deleteList',
+                   url: '/lists/deleteList',
                    contentType: 'application/json',
                    type: 'POST',
                    data: JSON.stringify(data),
@@ -524,7 +515,7 @@
                 data.active = active;
 
                  $.ajax({
-                   url: '/updateList',
+                   url: '/lists/updateList',
                    contentType: 'application/json',
                    type: 'POST',
                    data: JSON.stringify(data),
@@ -547,7 +538,7 @@
                 data.id = id;
                 
                  $.ajax({
-                   url: '/getListItems',
+                   url: '/lists/getListItems',
                    contentType: 'application/json',
                    type: 'POST',
                    data: JSON.stringify(data),
@@ -578,7 +569,7 @@
                 data.listID = listID;
 
                 $.ajax({
-                   url: '/createItem',
+                   url: '/lists/createItem',
                    contentType: 'application/json',
                    type: 'POST',
                    data: JSON.stringify(data),
@@ -594,7 +585,7 @@
                 var id = $('#hdnSelectedList').val();
                 var data = {};
                 data.id = id;
-                sendDataToServer('/getListItems', data, generateAlist, '');     
+                sendDataToServer('/lists/getListItems', data, generateAlist, '');     
             }
 
             function changeCountItem(id)
@@ -613,7 +604,7 @@
                 
                 data.id = id;
                 data.count = count;
-                sendDataToServer('/updateCountItem', data, '', '');
+                sendDataToServer('/lists/updateCountItem', data, '', '');
             }
 
             function getSelectedListItems(listID)
@@ -621,8 +612,8 @@
                 try {
                         var data = {};
                         data.id = listID;
-                        sendDataToServer('/getListItems', data, generateAlist, '');
-                        sendDataToServer('/getSelectedItems', data, generateSelectedList, '');
+                        sendDataToServer('/lists/getListItems', data, generateAlist, '');
+                        sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
                         
                 }
                 catch(e){}
@@ -650,7 +641,7 @@
                     var data = {};
                     data.id = id;
 
-                    sendDataToServer('/deleteItem', data, removeItemSuccess, '' );                   
+                    sendDataToServer('/lists/deleteItem', data, removeItemSuccess, '' );                   
                     
                 } catch (error) {
                     console.error("removeItem: " + error);
@@ -678,7 +669,7 @@
                     data.count = $('#txtItemCount_' + id).val();
                     data.selected = $('#cbItemSelected_' + id).is(":checked"); 
 
-                    sendDataToServer('/updateItem', data, updateItemSuccess, '' );                   
+                    sendDataToServer('/lists/updateItem', data, updateItemSuccess, '' );                   
                     
                 } catch (error) {
                     console.error("updateItem: " + error);

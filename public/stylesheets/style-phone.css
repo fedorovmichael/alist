@@ -218,6 +218,12 @@ a {
   height:96px;
 }
 
+.list-main-button:hover 
+{
+  border:solid 3px #f1c40f;
+  border-radius:12px;
+}
+
 .list-new-input
 {
   width: 500px;

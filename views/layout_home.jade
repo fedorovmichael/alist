@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+  head
+    title AList
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/sticky-footer-navbar.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/signin.css')    
+    script(src='/javascripts/libraries/jquery-3.1.0.min.js')
+    script(src='/javascripts/libraries/bootstrap.min.js')   
+  body(style='padding:0;')
+    nav(class="navbar navbar-inverse")
+      div(class="container-fluid")
+        div(class="navbar-header")
+          button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#myNavbar")
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")               
+          a(class="navbar-brand", href="#") AList
+    
+        div(class="collapse navbar-collapse" id="myNavbar")
+          ul(class="nav navbar-nav")
+            li(class="active")
+              a(href="/") Home
+            li
+              a(href="#") About
+            li
+              a(href="#") Projects
+            li
+              a(href="#") Contact
+      
+          ul(class="nav navbar-nav navbar-right")
+            -if(userIsActive)
+              li
+                a(href="/lists")
+                  span(class="glyphicon glyphicon-list-alt") Lists
+              li
+                a(href="/users/logout")
+                  span(class="glyphicon glyphicon-log-out") Logout
+            -else
+              li
+                a(href="/users/login")
+                  span(class="glyphicon glyphicon-log-in") Login
+              li
+                a(href="/users/singup")
+                  span(class="glyphicon glyphicon-user") Singup
+
+    block content   
+      div(class="container-fluid text-center")
+    div(id="footer")  
+      div(class="container")
+        p(class="text-muted") Place sticky footer content here.
+
+
+
