@@ -4,14 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var cookieEncrypter = require('cookie-encrypter');
+var session = require('express-session');
+var appConfig = require("./config/index.js");
 
 var index = require('./routes/index');
-
-// var users = require('./routes/users');
-// var my = require('./routes/my');
+var users = require('./routes/users');
+var lists = require('./routes/lists');
 
 var app = express();
+//load configuration
+appConfig.loadConfig();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,24 +25,39 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(appConfig.getConfig("cookie", "secret")));
+app.use(cookieEncrypter(appConfig.getConfig("cookie", "secret")));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret: appConfig.getConfig("session", "secret")}));
 
+
+//lists
+app.use('/lists', lists);
+app.use('/getFullList', lists);
+app.use('/createNewList', lists);
+app.use('/deleteList', lists);
+app.use('/updateList', lists);
+app.use('/getListItems', lists);
+app.use('/createItem', lists);
+app.use('/deleteItem', lists);
+app.use('/updateItem', lists);
+app.use('/setSelectedAndCountItem', lists);
+app.use('/getSelectedItems', lists);
+app.use('/updateCountItem', lists);
+app.use('/clearSelectedItems', lists);
+app.use('/setActiveList', lists);
+app.use('/updateCompleteValue', lists);
+
+//users
+app.use('/users', users);
+app.use('/login', users);
+app.use('/logout', users);
+app.use('/singup', users);
+app.use('/userLogin', users);
+app.use('/userSignup', users);
+
+//index
 app.use('/', index);
-app.use('/getFullList', index);
-app.use('/createNewList', index);
-app.use('/deleteList', index);
-app.use('/updateList', index);
-app.use('/getListItems', index);
-app.use('/createItem', index);
-app.use('/deleteItem', index);
-app.use('/updateItem', index);
-app.use('/setSelectedAndCountItem', index);
-app.use('/getSelectedItems', index);
-app.use('/updateCountItem', index);
-app.use('/clearSelectedItems', index);
-app.use('/setActiveList', index);
-app.use('/updateCompleteValue', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

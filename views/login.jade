@@ -1,0 +1,19 @@
+extends layout_home
+block content
+  -if(messageType == 'error')
+    div(class='alert alert-danger alert-dismissable')
+      a(href="#", class="close", data-dismiss="alert", aria-label="close") ×
+      h5 #{messageBody}                
+  -if(messageType == 'success')
+    div(class='alert alert-success alert-dismissable')
+      a(href="#", class="close", data-dismiss="alert", aria-label="close") ×
+      h5 #{messageBody}
+  div(class="container")
+    form(class="form-signin", role="form", method="post", action="/users/userLogin")      
+        input(class="form-control" placeholder="Login name" required="" autofocus=""  name="login")
+        input(class="form-control" placeholder="Password" required="" type="password" name="password")
+         
+        label(class="checkbox") Remember me 
+          input(value="remember-me" type="checkbox" name="rememberMe")
+                     
+        button(class="btn btn-lg btn-primary btn-block" type="submit") Sign in

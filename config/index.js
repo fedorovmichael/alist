@@ -6,13 +6,13 @@ exports.loadConfig = function()
     config = require('./config.json');
 };
 
-exports.getConfig = function(name)
+exports.getConfig = function(type, name)
 {
-    if(!config[name])
+    if(!config[type][name])
     {
         throw new Error("Not exitst configuration -> " + name);
     }
 
-    return config[name];
+    return config[type][name];
 };
 

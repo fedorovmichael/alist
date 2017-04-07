@@ -5,13 +5,13 @@ var db = {};
 appConfig.loadConfig();
 
 var config = {
-    user: appConfig.getConfig("user"),
-    database: appConfig.getConfig("database"),
-    password: appConfig.getConfig("password"),
-    host: appConfig.getConfig("host"),
-    port: appConfig.getConfig("port"),
-    max: appConfig.getConfig("max"),
-    idleTimeoutMillis: appConfig.getConfig("idleTimeoutMillis")
+    user: appConfig.getConfig("db", "user"),
+    database: appConfig.getConfig("db", "database"),
+    password: appConfig.getConfig("db", "password"),
+    host: appConfig.getConfig("db", "host"),
+    port: appConfig.getConfig("db", "port"),
+    max: appConfig.getConfig("db", "max"),
+    idleTimeoutMillis: appConfig.getConfig("db", "idleTimeoutMillis")
 };
 
 var pool = new pg.Pool(config);
@@ -19,7 +19,19 @@ var pool = new pg.Pool(config);
 db.select = function (req, res, next)
 {  
     var result = [];
+    var userID = '';
     console.log("start");
+    
+    if(req.session.user)
+    {
+        console.log('****************************************************** get user id from session ****************************************************');
+        console.log(' ');
+        console.log(' ');
+        console.log("user session is -> ", req.session.user);
+        console.log("user id is -> ", req.session.user.id);
+        userID = req.session.user.id;
+    }
+    
     var queryDB = "SELECT * FROM list";
 
     console.log("connect to db");
@@ -101,7 +113,7 @@ db.getSelectedItems = function (req, res, next)
     
     var id = req.body.id;
         
-    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true";
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name asc";
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(res, queryDB);
@@ -219,7 +231,7 @@ db.clearSelectedItems = function (req, res, next)
     
     var id = req.body.id;   
         
-    var queryDB = "UPDATE list_items SET selected = false " + 
+    var queryDB = "UPDATE list_items SET selected = false, complete = false" +
     " WHERE list_id = '" + id + "'";
 
     console.log("query db -> " + queryDB);

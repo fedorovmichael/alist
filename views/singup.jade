@@ -1,0 +1,18 @@
+extends layout_home
+block content
+  -if(messageType == 'error')
+    div(class='alert alert-danger alert-dismissable text-center')
+      a(href="#", class="close", data-dismiss="alert", aria-label="close") ×
+      h5 #{messageBody}                
+  -if(messageType == 'success')
+    div(class='alert alert-success alert-dismissable text-center')
+      a(href="#", class="close", data-dismiss="alert", aria-label="close") ×
+      h5 #{messageBody}
+  div(class="container")      
+    form(class="form-signin", role="form", method="post", action="/users/userSignup")      
+        input(class="form-control" placeholder="Name" autofocus="", name='name')
+        input(class="form-control" placeholder="Login", name='login')
+        input(class="form-control", placeholder="Email Address", required="", type="email", name='email')
+        input(class="form-control", placeholder="Password", required="", type="password", name='password')
+
+        button(class="btn btn-lg btn-primary btn-block" type="submit") Sign up
