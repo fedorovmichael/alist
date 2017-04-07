@@ -113,7 +113,7 @@ db.getSelectedItems = function (req, res, next)
     
     var id = req.body.id;
         
-    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete asc";
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name asc";
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(res, queryDB);
