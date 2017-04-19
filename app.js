@@ -47,6 +47,7 @@ app.use('/updateCountItem', lists);
 app.use('/clearSelectedItems', lists);
 app.use('/setActiveList', lists);
 app.use('/updateCompleteValue', lists);
+app.use('/getSelectedItemsAndPhones', lists);
 
 //users
 app.use('/users', users);

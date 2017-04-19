@@ -65,7 +65,15 @@ router.post('/setActiveList', function(req, res, next) {
   console.log('finish get items list');
 });
 
-//
+router.use('/getSelectedItemsAndPhones', db.getSelectedItemsAndPhones);
+
+router.post('/getSelectedItemsAndPhones', function(req, res, next) {
+  console.log("get selected items and phone numbers");
+  db.getSelectedItemsAndPhones();
+  console.log('finish get selected items and phone numbers');
+});
+
+
 
 //ITEMS ===================================================================
 

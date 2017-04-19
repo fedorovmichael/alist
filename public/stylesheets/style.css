@@ -275,4 +275,20 @@ a {
       padding: 15px;
     }
     .row.content {height:auto;} 
+  }
 
+.list-menu-li
+{
+  width: 55px !important;
+}
+
+.list-menu-span
+{
+  font-size: 20px;
+  color: #000;
+}
+
+#liSendSMS
+{
+  display: none;
+}
