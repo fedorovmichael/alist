@@ -113,6 +113,12 @@
                     $("#divListsContainer").slideToggle();                   
                 });
 
+                $("#aSendSMS").on("click", function(event){
+                    event.preventDefault();
+                    sendSMS();                   
+                });
+                
+
                 $("body").on("click", "a[id^='updateItem_']", function(event){             
                     updateItem(this.id);
                 });
@@ -273,7 +279,7 @@
                     var fullCountId = "count_" + id;
                     var selectedCountId = generateId();
                     html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
-                            "<div class='form-group div-selected-entity-name'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<div class='form-group div-selected-entity-name' style='display: inline-block;'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
                             "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
                             "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='/images/complete.png' class='entity-general-button' title='complite item'/></a>"+
                             "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='/images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  

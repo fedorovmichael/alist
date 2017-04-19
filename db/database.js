@@ -113,7 +113,7 @@ db.getSelectedItems = function (req, res, next)
     
     var id = req.body.id;
         
-    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name asc";
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name ASC";
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(res, queryDB);
@@ -135,6 +135,62 @@ db.setActiveList = function (req, res, next)
     console.log("query db -> " + queryDB);
     getSingleResponse(res, queryDB);   
 }
+
+db.getSelectedItemsAndPhones = function (req, res, next)
+{
+    console.log("start get selected items");    
+    
+    console.log("params -> list id: " + req.body.id);
+    
+    var id = req.body.id;
+    var resSelectedItems;
+    var resPhoneNumbers;
+        
+    var queryDBItems = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name ASC"
+    var queryDBPhoneNumbers = "SELECT * FROM phone_numbers WHERE list_id= '" + id + "'";
+
+    console.log("query db selected items -> " + queryDBItems);
+    console.log("query db phone numbers -> " + queryDBPhoneNumbers);
+
+    pool.connect(function(err, client, done){
+        if(err)
+        {
+            console.error("connection error -> " + err);
+        }
+        else
+        {
+            console.log("success connec to db");
+        }
+        //get selected items by list id
+        client.query(queryDBItems, function(err, result){            
+            if(err)
+            {
+                console.error("send query error -> ", err);
+            }
+            console.log("retrieved rows selected items -> ", result.rows);
+            resSelectedItems = result.rows;
+            //res.json({data: result.rows});
+
+            //get phone numbers by list id
+            client.query(queryDBPhoneNumbers, function(err, result){           
+                if(err)
+                {
+                    console.error("send query error -> ", err);
+                }
+                console.log("retrieved rows phone numbers -> ", result.rows);
+                resPhoneNumbers = result.rows;
+                //res.json({data: result.rows});
+                console.log("send response selected Items: ", resSelectedItems);
+                console.log("send response phone numbers: ", resPhoneNumbers);
+
+                res.json({selectedItems: resSelectedItems, phoneNumbers: resPhoneNumbers });
+            });
+        });       
+
+        done();
+    });    
+}
+
 
 //ITEMS ===================================================================
 
