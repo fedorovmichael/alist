@@ -1,0 +1,259 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.div-entity-container
+{
+   width:450px; /*850 mob*/
+   float:left; 
+   border: solid 0px grey; 
+   margin-right:20px;
+}
+
+.div-entity-body
+{
+  background-color:  #fffde7;
+  border: solid 3px #f1c40f; 
+  border-radius:12px;
+}
+
+#aCollapseList
+{
+  display: block;
+  width: 24px;
+}
+
+.show-list-container
+{
+  display: block;
+}
+
+.hide-list-container
+{
+  display: none;
+}
+
+/* general entity */
+
+.div-general-entity-container
+{
+  background-color:#fffde7;
+  border-bottom-color: #5dade2; 
+  border-bottom-width: 1px; 
+  border-bottom-style:solid; 
+  width:440px; /*840*/
+  min-width:440px; /*840*/
+  min-height: 60px; /*120*/
+}
+
+
+.input-general-entity-count
+{
+  width:60px; /*120 mob*/
+  height: 40px; /*80 mob*/
+  font-size: 18pt; /*36 mob*/
+  margin-left: 5px;
+  margin-right: 5px;
+  border: solid 3px gray;
+  border-radius: 12px;
+  vertical-align: top; 
+}
+
+.entity-general-button
+{
+  width: 48px; /*96 mob*/
+  height: 48px; /*96 mob*/ 
+}
+
+.entit-general-fl-right
+{
+  float: right;
+}
+
+.entity-general-name
+{  
+  margin-left:10px;  
+  font-size: 18pt; /*36 mob*/
+  color:#000;
+  text-align: center;
+  display: inline;
+}
+
+/* Item menu*/
+.nav-tabs > li
+{
+  text-align: center;
+}
+.nav-tabs > li > a
+{
+  width: 165px;/*330 mob*/
+  margin: 0px;
+  height: 55px;/*110*/
+}
+
+.nav-tabs > li > a:active, .nav-tabs > li > a:hover, .nav-tabs > li > a:focus 
+{
+  border: solid 1px grey;    
+  background-color:#B9DFF8;
+  color:#000;
+}
+
+#aClearAll
+{
+  width:75px;/*150 mob*/
+}
+
+.item-menu-active
+{
+  border: solid 1px grey;    
+  background-color:#B9DFF8;
+  color:#000;
+}
+
+/* Full Item  */
+.input-cb-count
+{
+  width: 40px; /*80 mob*/
+  height: 40px; /*80 mob*/
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.div-full-entity-name
+{
+  width:300px; /*600 mob*/
+  min-width:300px; /*600 mob*/
+  /*float: left;*/
+  margin-left: 10px;  
+  margin-top: 25px;
+  display: inline-block;
+  height: auto;
+}
+
+.span-full-item-select
+{
+  margin-right: 5px;
+  margin-top: 15px;
+}
+
+.span-full-item-count
+{
+  margin-right: 5px;
+  margin-top: 17px;
+}
+
+/* Selected Item  */
+.div-selected-entity-name
+{
+  width:225px; /*450 mob*/
+  min-width:225px; /*450 mob*/
+  /*float: left;*/
+  margin-left: 10px;  
+  /*height: 30px;*/
+  margin-top: 5px;
+}
+.a-button-complite
+{
+  margin-right:5px; 
+  margin-top: 20px;
+}
+
+.a-button-delete
+{
+  margin-top: 20px;
+}
+
+.input-selected-count
+{
+  margin-top: 20px;
+}
+/* Item */
+.item-edit-name
+{
+  width: 175px; /*350 mob*/
+  /*height: 80px;*/
+  border: solid 3px grey; 
+  border-radius:12px;
+  font-size: 36pt;
+}
+
+.panel > div:hover
+{
+  background-color:#B9DFF8;
+}
+
+/* list*/
+.li-list-general
+{
+  border: solid 3px grey; 
+  border-radius:12px; 
+  height:60px; /*120*/
+  padding-top:6px; 
+  background-color: white;
+}
+
+.li-list-general-active
+{
+  border: solid 3px grey; 
+  border-radius:12px; 
+  height:60px; /*120 mob*/  
+  background-color: #B9DFF8;
+}
+
+.li-list-general-div 
+{
+  width: 100%;
+  height: 59px; /*118 mob*/
+  margin-top: 12px;
+}
+
+.list-main-button
+{
+  width:60px; /*120 mob*/
+  height:48px; /*96 mob*/
+}
+
+.list-main-button:hover 
+{
+  border:solid 3px #f1c40f;
+  border-radius:12px;
+}
+
+.list-new-input
+{
+  width: 250px; /*500 mob*/
+  height: 40px; /*80 mob*/
+  border: solid 3px grey; 
+  border-radius:12px;
+  font-size: 18pt; /*36 mob*/
+}
+
+.count-items
+{
+  margin-left:5px;
+  font-size: 15pt; /*30*/
+}
+
+#aSendSMS
+{
+  display: block;
+}
+
+
+@media screen and (min-width: 630px) 
+{   
+   /*#divListsContainer {display: block !important;}
+   #aCollapseList { display: none !important;}*/
+}
+
+@media screen and (max-width: 630px) 
+{   
+   /*#divListsContainer {display: none;}
+   #aCollapseList { display: block;}*/
+}
+
