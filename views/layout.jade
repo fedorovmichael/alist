@@ -1,15 +1,16 @@
 doctype html
 html
   head
-    title= title
-    //link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-    link(rel="stylesheet", href="/stylesheets/bootstrap-theme.min.css" )
+    title= title    
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel="stylesheet", href="/stylesheets/bootstrap-theme.min.css" )    
+    link(rel="stylesheet"  href="/stylesheets/jquery-ui.css")
     -if(is_desktop)    
       link(rel='stylesheet', href='/stylesheets/style.css')
     -if(is_phone)
       link(rel='stylesheet', href='/stylesheets/style-phone.css')
     script(src='/javascripts/libraries/jquery-3.1.0.min.js')
+    script(src='/javascripts/libraries/jquery-ui.js')
     script(src='/javascripts/libraries/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/code/alist.js')    

@@ -288,3 +288,8 @@ a {
   font-size: 20px;
   color: #000;
 }
+
+.ui-dialog-titlebar-close
+{
+  display: none;
+}
