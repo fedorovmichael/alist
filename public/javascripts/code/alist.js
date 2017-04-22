@@ -115,7 +115,8 @@
 
                 $("#aSendSMS").on("click", function(event){
                     event.preventDefault();
-                    sendSMS();                   
+                    $('#dialog').dialog('open');
+                    //sendSMS();                   
                 });
                 
 
@@ -136,8 +137,36 @@
                     {
                         unCompliteHandler(data.itemID);
                     }
-                })               
-                                                
+                });
+
+                $("#dialog").dialog({
+                    modal: true,
+                    width: 350,
+                    height: 160,
+                    autoOpen: false,
+                    draggable: false, 
+                    resizable: false,
+                    title: "Confirmation",
+                    position: { my: "center", at: "center", of: "#divItems" },                   
+                    buttons: [
+                        {
+                            id: "Yes",
+                            text: "Yes",
+                            click: function() {
+                                 sendSMS();
+                                 $(this).dialog('close'); 
+                            }
+                        },
+                        {
+                            id: "No",
+                            text: "No",
+                            click: function () {
+                                $(this).dialog('close');
+                            }
+                        }
+
+                    ]
+                });              
             });
 
 

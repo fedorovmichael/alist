@@ -23,5 +23,6 @@ function sendSMSDataHandler(response)
         });
                
         var result = window.app.sendSMS(phoneNumber, message);
+
     });    
 }
