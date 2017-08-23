@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/database.js');
 var device = require('express-device');
+var google = require('../google_sheets/data_provider.js');
 
 router.use(device.capture());
 device.enableDeviceHelpers(router);
@@ -73,7 +74,13 @@ router.post('/getSelectedItemsAndPhones', function(req, res, next) {
   console.log('finish get selected items and phone numbers');
 });
 
+router.use('/updateGoogleSheets', google);
 
+router.post('/updateGoogleSheets', function(req, res, next) {
+  console.log("update google sheets data");
+  google();
+  console.log('finish update google sheets data');
+});
 
 //ITEMS ===================================================================
 

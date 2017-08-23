@@ -11,6 +11,7 @@ var appConfig = require("./config/index.js");
 var index = require('./routes/index');
 var users = require('./routes/users');
 var lists = require('./routes/lists');
+var categories = require('./routes/categories');
 
 var app = express();
 //load configuration
@@ -48,6 +49,7 @@ app.use('/clearSelectedItems', lists);
 app.use('/setActiveList', lists);
 app.use('/updateCompleteValue', lists);
 app.use('/getSelectedItemsAndPhones', lists);
+app.use('/updateGoogleSheets', lists);
 
 //users
 app.use('/users', users);
@@ -56,6 +58,10 @@ app.use('/logout', users);
 app.use('/singup', users);
 app.use('/userLogin', users);
 app.use('/userSignup', users);
+
+//categories
+app.use('/getCategories', categories);
+app.use('/createCategory', categories);
 
 //index
 app.use('/', index);

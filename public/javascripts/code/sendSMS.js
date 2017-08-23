@@ -22,7 +22,19 @@ function sendSMSDataHandler(response)
             message += item.name +" - " + item.count + " \n";
         });
                
-        var result = window.app.sendSMS(phoneNumber, message);
+        //var result = window.app.sendSMS(phoneNumber, message);
 
-    });    
+    });
+
+    var id = $('#hdnSelectedList').val();
+    var data = {};
+    data.id = id;
+
+    sendDataToServer('/lists/updateGoogleSheets', data, googleUpdateSuccess, '');
+       
+}
+
+function googleUpdateSuccess()
+{
+
 }
