@@ -7,7 +7,6 @@ var google = require('../google_sheets/data_provider.js');
 router.use(device.capture());
 device.enableDeviceHelpers(router);
 
-//CATEGORIES ===================================================================
 router.use('/getCategories', db.getCategories);
 router.post('/getCategories', function(req, res, next) {
   console.log("get list categories");

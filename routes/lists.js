@@ -18,6 +18,16 @@ router.get('/', function(req, res, next) {
   
 });
 
+router.get('/categories', function(req, res, next) {
+  // if(req.session.user){
+        res.render('categories');
+  //   }
+  // else{
+  //   res.render('login');
+  // }
+  
+});
+
 router.use('/getFullList', db.select);
 
 router.post('/getFullList', function(req, res, next) {
