@@ -56,6 +56,10 @@ a {
   min-height: 30px;
 }
 
+.div-general-entity-container:hover
+{
+  background-color:#B9DFF8;
+}
 .div-general-entity-name
 {
   width:210;
@@ -156,10 +160,10 @@ a {
 }
 
 /* Item */
-.panel > div:hover
+/*.panel > div:hover
 {
   background-color:#B9DFF8;
-}
+}*/
 
 /* list */
 .li-list-general

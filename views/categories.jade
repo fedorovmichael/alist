@@ -1,9 +1,44 @@
-extends layout
-
-block content
-div(id="divCategoriesContainer" class="panel panel-default div-entity-container div-margin-right-20")
+extends layout  
+block content  
+  h1 categories
+  input(id="hdnSelectedCategory" type="hidden")
+  div(id="divCategoriesContainer" class="panel panel-default div-entity-container div-margin-right-20")  
     div(class="panel-body div-entity-body")
       input(id="txtCategoryName" type="textbox" class="list-new-input")
       a(id="aNewCategory" href="#")
         img(id="imgNewCategory" class="entity-general-button" src="/images/add.png", title='add list')
-      ul(id="ulCategories" class="nav nav-pills nav-stacked") 
+      ul(id="ulCategories" class="nav nav-pills nav-stacked")
+        each cat in categories          
+          -var cbSelected = "", activeClass = "li-list-general";
+          -if(cat.activ == true)
+            cbSelected = "checked";
+            activeClass = "li-list-general-active";            
+            activeID = cat.id;
+          li(id="li_category_#{cat.id}" class="#{activeClass}")
+            div(id="category_display_#{cat.id}" class="li-list-general-div")
+              a(id="category_#{cat.id}" href='#' class="entity-general-name") #{cat.name}
+              a(id="delete_category_#{cat.id}" href='#' class="entit-general-fl-right")
+                img(class="entity-general-button" src="/images/delete.png" title='delete category')
+              a(id="edit_category_#{cat.id}" href="#" class="entit-general-fl-right")
+                img(class="entity-general-button" src="/images/edit.png" title="edit category")
+            div(id="editCategory" class="li-list-general-div" style="display: none;")
+              input(id="#{cat.id}" class="list-new-input" value="#{cat.name}")
+              a(id="update_category_#{cat.id}" href="#" class="entit-general-fl-right")
+                img(class="entity-general-button" src="/images/edit.png" title="update category")
+  
+  div(id="divAvailableItems" class="div-entity-body div-entity-container" style="width:383px; padding:5px;")
+    select(id='selAvailableItems' multiple='multiple')
+      each item in items
+        option(itemID="#{item.id}" value="#{item.id}") #{item.name}
+     
+  
+  script.
+    $('#selAvailableItems').multiSelect({
+      afterSelect: function(values){
+       setItemCategoryID(values);
+      },
+     afterDeselect: function(values){
+      alert("Deselect value: "+values);
+     }
+    });
+  

@@ -60,8 +60,11 @@ app.use('/userLogin', users);
 app.use('/userSignup', users);
 
 //categories
+app.use('/categories', categories);
 app.use('/getCategories', categories);
 app.use('/createCategory', categories);
+app.use('/getItemsByCategoryID', categories);
+app.use('/setItemCategoryID', categories);
 
 //index
 app.use('/', index);

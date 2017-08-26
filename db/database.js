@@ -310,32 +310,6 @@ db.updateCompleteValue = function (req, res, next)
     getSingleResponse(res, queryDB);
 }
 
-//CATEGORIES ===================================================================
-db.getCategories = function (req, res, next)
-{
-    var queryDB = "select * from categories";
-
-    console.log("query db -> " + queryDB);
-    getSingleResponse(res, queryDB);
-}
-
-db.createCategory = function (req, res, next)
-{
-    // console.log("start create item");    
-    // console.log("params ->  id: " + req.body.id +", name: " + req.body.name + ", count: " + req.body.count +", selected: " + req.body.selected + ", list id: " + req.body.listID);
-
-    // var id = req.body.id;
-    // var name = req.body.name;
-    // var count = req.body.count;
-    // var selected = req.body.selected;
-    // var listID = req.body.listID;
-
-    // var queryDB = "INSERT INTO list_items(id, name, count, selected, list_id) VALUES('" + id + "', '" + name + "','" + count + "', '" + selected + "', '" + listID + "')";
-
-    // console.log("query db -> " + queryDB);
-    // getSingleResponse(res, queryDB);
-}
-
 //GENERAL FUNCTIONS==========================================================
 
 function getSingleResponse(res, queryDB)
