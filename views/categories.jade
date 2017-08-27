@@ -37,8 +37,8 @@ block content
       afterSelect: function(values){
        setItemCategoryID(values);
       },
-     afterDeselect: function(values){
-      alert("Deselect value: "+values);
-     }
+      afterDeselect: function(values){
+       removeItemCategory(values);
+      }
     });
   

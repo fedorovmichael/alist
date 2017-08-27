@@ -45,11 +45,27 @@ router.get('/', function(req, res, next) {
   
 });
 
-router.use('/getCategories', db_categories.getCategories);
 router.post('/getCategories', function(req, res, next) {
-  console.log("get list categories");
-  db_categories.getCategories();
-  console.log('finish get list categories');
+    async.series([
+        function getCategoriesFromDB(callback)
+        {
+            db_categories.getCategories(function(err, resultGetCategories){
+                  if(err){
+                      console.log("get categories list from db error: ", err);
+                      callback(err, null); 
+                      return;
+                 }
+  
+                 callback(null, resultGetCategories);
+              })        
+        }
+    ], 
+    function(err, result){
+        //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+      //   console.log(result[0]);
+      //   console.log("");
+        res.json({ categories: result[0] });
+    });
 });
 
 router.post('/createCategory', function(req, res, next) {

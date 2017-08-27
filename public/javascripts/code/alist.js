@@ -5,185 +5,187 @@
             var arrListItems = [];
             var socket = '';             
             
-            $(document).ready(function(){
-                //socket
-                socket = io();//.connect('http://localhost:4000');
-                fillFullList();
+        $(document).ready(function(){
+            //socket
+            socket = io();//.connect('http://localhost:4000');
+            fillFullList();
+        
+            $("#aFullList").on("click", function(event){                                        
+                event.preventDefault();
+                itemMenuHandler("aFullList");
+                var id = $('#hdnSelectedList').val();
+                var data = {};
+                data.id = id;
+                sendDataToServer('/lists/getListItems', data, generateAlist, '');                    
+            });
             
-                $("#aFullList").on("click", function(event){                                        
-                    event.preventDefault();
-                    itemMenuHandler("aFullList");
-                    var id = $('#hdnSelectedList').val();
-                    var data = {};
-                    data.id = id;
-                    sendDataToServer('/lists/getListItems', data, generateAlist, '');                    
-                });
-                
-                $("#aSelectedList").on("click", function(event){
-                    event.preventDefault();
-                    itemMenuHandler("aSelectedList");
-                    var id = $('#hdnSelectedList').val();                    
-                    var data = {};
-                    data.id = id;
-                    sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
-                });
-
-                $("#aClearAll").on("click", function(event){
-                    event.preventDefault();
-                    itemMenuHandler("aFullList");
-                    var id = $('#hdnSelectedList').val();
-                    var data = {};
-                    data.id = id;
-                    sendDataToServer('/lists/clearSelectedItems', data, clearAllSelectedItems, '');
-                });
-
-                
-                $("body").on("click", "#containerSelectedList a[id^='btnDelete_']", function(event){                    
-                    btnDeleteHandler(this, this.id);
-                });
-
-                $("body").on("click", "#containerSelectedList a[id^='btnComplite_']", function(event){              
-                    var dataSocket = {}, dataUpdate = {};
-                    $("#hdnCompleteItem").val('');
-                    $("#hdnCompleteItem").val(this.id);
-                    dataSocket.itemID = this.id;
-                    dataSocket.listID = '';
-                    dataSocket.command = 'complite';                
-                    socket.emit('recCommand', dataSocket);
-
-                    dataUpdate.id = this.id.split('_')[1];
-                    dataUpdate.complete = true;
-                    sendDataToServer('/lists/updateCompleteValue', dataUpdate, completeItemSuccess, '');
-
-                    return false;
-                });
-
-                $("body").on("click", "a[id^='delete_']", function(event){                   
-                    var id = this.id;
-                    deleteList(id.split('_')[1]);
-                });
-
-                $("body").on("click", "a[id^='edit_']", function(event){                   
-                    var id = this.id;
-                    editList(id.split('_')[1]);                    
-                });
-
-                $("body").on("click", "a[id^='update_']", function(event){                   
-                    var id = this.id;
-                    updateList(id.split('_')[1]);
-                });
-
-                $("body").on("click", "a[id^='list_']", function(event){                   
-                    var id = (this.id).split('_')[1];
-                    //getListItems(id.split('_')[1], generateAlist);
-                    $('#hdnSelectedList').val(id);
-                    itemMenuHandler("aSelectedList");
-                    getSelectedListItems(id);
-                    setSelectedList("ulLists", id); 
-                });
-
-                $("body").on("change", "input[id^='count_']", function(event){                   
-                    var id = (this.id).split('_')[1];
-                    changeCountItem(id);                    
-                });
-
-                $("body").on("click", "div[id^='display_']", function(event){                   
-                    var id = (this.id).split('_')[1];                                        
-                    if(event.target.nodeName == 'DIV')
-                    {
-                        itemMenuHandler("aSelectedList");
-                        $('#hdnSelectedList').val(id);
-                        getSelectedListItems(id);
-                        setSelectedList("ulLists", id);
-                    }                                    
-                });
-                                
-                $("#aNewList").on("click", function(event){
-                    event.preventDefault();
-                    addNewList();                    
-                });
-
-                $("#aEditNewItem").on("click", function(event){
-                    event.preventDefault();
-                    addEditNewItem();                    
-                });
-
-                $("#aCollapseList").on("click", function(event){
-                    event.preventDefault();
-                    $("#divListsContainer").slideToggle();                   
-                });
-
-                $("#aSendSMS").on("click", function(event){
-                    event.preventDefault();
-                    $('#dialog').dialog('open');
-                    //sendSMS();                   
-                });
-                
-
-                $("body").on("click", "a[id^='updateItem_']", function(event){             
-                    updateItem(this.id);
-                });
-
-                $("body").on("click", "a[id^='deleteItem_']", function(event){                   
-                    removeItem(this.id);
-                });
-
-                socket.on('reqCommand', function(data){
-                    if(data.command == 'complite')
-                    {
-                        btnCompliteHandler(null, data.itemID);
-                    }
-                    if(data.command == 'uncomplite')
-                    {
-                        unCompliteHandler(data.itemID);
-                    }
-                });
-
-                $("#dialog").dialog({
-                    modal: true,
-                    width: 350,
-                    height: 160,
-                    autoOpen: false,
-                    draggable: false, 
-                    resizable: false,
-                    title: "Confirmation",
-                    position: { my: "center", at: "center", of: "#divItems" },                   
-                    buttons: [
-                        {
-                            id: "Yes",
-                            text: "Yes",
-                            click: function() {
-                                 sendSMS();
-                                 $(this).dialog('close'); 
-                            }
-                        },
-                        {
-                            id: "No",
-                            text: "No",
-                            click: function () {
-                                $(this).dialog('close');
-                            }
-                        }
-
-                    ]
-                });
-
-                $("#aNewCategory").on("click", function(event){
-                    event.preventDefault();
-                    addNewCategory();
-                });
-                
-                $("body").on("click", "div[id^='category_display_']",  function(event){                   
-                    var id = (this.id).split('_')[2];                    
-                    $('#hdnSelectedCategory').val(id);                    
-                    getItemsByCategoryID(id);
-                    setSelectedList("ulCategories", "li_category_" + id); 
-                });               
+            $("#aSelectedList").on("click", function(event){
+                event.preventDefault();
+                itemMenuHandler("aSelectedList");
+                var id = $('#hdnSelectedList').val();                    
+                var data = {};
+                data.id = id;
+                sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
             });
 
+            $("#aClearAll").on("click", function(event){
+                event.preventDefault();
+                itemMenuHandler("aFullList");
+                var id = $('#hdnSelectedList').val();
+                var data = {};
+                data.id = id;
+                sendDataToServer('/lists/clearSelectedItems', data, clearAllSelectedItems, '');
+            });
 
-           function fillFullList()
-           {
+            
+            $("body").on("click", "#containerSelectedList a[id^='btnDelete_']", function(event){                    
+                btnDeleteHandler(this, this.id);
+            });
+
+            $("body").on("click", "#containerSelectedList a[id^='btnComplite_']", function(event){              
+                var dataSocket = {}, dataUpdate = {};
+                $("#hdnCompleteItem").val('');
+                $("#hdnCompleteItem").val(this.id);
+                dataSocket.itemID = this.id;
+                dataSocket.listID = '';
+                dataSocket.command = 'complite';                
+                socket.emit('recCommand', dataSocket);
+
+                dataUpdate.id = this.id.split('_')[1];
+                dataUpdate.complete = true;
+                sendDataToServer('/lists/updateCompleteValue', dataUpdate, completeItemSuccess, '');
+
+                return false;
+            });
+
+            $("body").on("click", "a[id^='delete_']", function(event){                   
+                var id = this.id;
+                deleteList(id.split('_')[1]);
+            });
+
+            $("body").on("click", "a[id^='edit_']", function(event){                   
+                var id = this.id;
+                editList(id.split('_')[1]);                    
+            });
+
+            $("body").on("click", "a[id^='update_']", function(event){                   
+                var id = this.id;
+                updateList(id.split('_')[1]);
+            });
+
+            $("body").on("click", "a[id^='list_']", function(event){                   
+                var id = (this.id).split('_')[1];
+                //getListItems(id.split('_')[1], generateAlist);
+                $('#hdnSelectedList').val(id);
+                itemMenuHandler("aSelectedList");
+                getSelectedListItems(id);
+                setSelectedList("ulLists", id); 
+            });
+
+            $("body").on("change", "input[id^='count_']", function(event){                   
+                var id = (this.id).split('_')[1];
+                changeCountItem(id);                    
+            });
+
+            $("body").on("click", "div[id^='display_']", function(event){                   
+                var id = (this.id).split('_')[1];                                        
+                if(event.target.nodeName == 'DIV')
+                {
+                    itemMenuHandler("aSelectedList");
+                    $('#hdnSelectedList').val(id);
+                    getSelectedListItems(id);
+                    setSelectedList("ulLists", id);
+                }                                    
+            });
+                            
+            $("#aNewList").on("click", function(event){
+                event.preventDefault();
+                addNewList();                    
+            });
+
+            $("#aEditNewItem").on("click", function(event){
+                event.preventDefault();
+                addEditNewItem();                    
+            });
+
+            $("#aCollapseList").on("click", function(event){
+                event.preventDefault();
+                $("#divListsContainer").slideToggle();                   
+            });
+
+            $("#aSendSMS").on("click", function(event){
+                event.preventDefault();
+                $('#dialog').dialog('open');
+                //sendSMS();                   
+            });
+            
+
+            $("body").on("click", "a[id^='updateItem_']", function(event){             
+                updateItem(this.id);
+            });
+
+            $("body").on("click", "a[id^='deleteItem_']", function(event){                   
+                removeItem(this.id);
+            });
+
+            socket.on('reqCommand', function(data){
+                if(data.command == 'complite')
+                {
+                    btnCompliteHandler(null, data.itemID);
+                }
+                if(data.command == 'uncomplite')
+                {
+                    unCompliteHandler(data.itemID);
+                }
+            });
+
+            $("#dialog").dialog({
+                modal: true,
+                width: 350,
+                height: 160,
+                autoOpen: false,
+                draggable: false, 
+                resizable: false,
+                title: "Confirmation",
+                position: { my: "center", at: "center", of: "#divItems" },                   
+                buttons: [
+                    {
+                        id: "Yes",
+                        text: "Yes",
+                        click: function() {
+                                sendSMS();
+                                $(this).dialog('close'); 
+                        }
+                    },
+                    {
+                        id: "No",
+                        text: "No",
+                        click: function () {
+                            $(this).dialog('close');
+                        }
+                    }
+
+                ]
+            });
+
+            $("#aNewCategory").on("click", function(event){
+                event.preventDefault();
+                addNewCategory();
+                var data = {};
+                sendDataToServer("/categories/getCategories", data, createHTMLCategories, null);
+            });
+            
+            $("body").on("click", "div[id^='category_display_']",  function(event){                   
+                var id = (this.id).split('_')[2];                    
+                $('#hdnSelectedCategory').val(id);                    
+                getItemsByCategoryID(id);
+                setSelectedList("ulCategories", "li_category_" + id); 
+            });               
+        });
+
+
+        function fillFullList()
+        {
                 $.ajax({
                    url: '/lists/getFullList',
                    contentType: 'application/json',
@@ -201,7 +203,7 @@
                         createListMenu();                      
                    }
                 });
-            }
+        }
  
         function generateAlist(response)
         { 
@@ -788,13 +790,13 @@
         {
             var data = {};
             data.name = $("#txtCategoryName").val();
-            data.id = generateId();
-
-            sendDataToServer("/categories/createCategory", data, successAddNewCategory, errorAddNewCategory);            
+            data.id = generateId();            
+            sendDataToServer("/categories/createCategory", data, successAddNewCategory, errorAddNewCategory);      
+            $("#txtCategoryName").val('');
         }
 
         function successAddNewCategory()
-        {
+        {            
             //TODO: display message on success
         }
 
@@ -849,6 +851,50 @@
 
         function errorSetItemCategoryID()
         {}
+
+        function removeItemCategory(itemID)
+        {            
+            var data = {};            
+            data.categoryID = '';
+            data.itemID = itemID;
+
+            sendDataToServer("/categories/setItemCategoryID", data, successRemoveItemCategoryID, errorRemoveItemCategoryID);
+        }
+
+        function successRemoveItemCategoryID()
+        {}
+
+        function errorRemoveItemCategoryID()
+        {}
+
+        function createHTMLCategories(data)
+        {
+            var strHTML = '';
+            $("#ulCategories").empty();
+            $("#ulCategories li").remove();
+
+            $.each(data.categories, function(index, value){
+                strHTML += '<li id="li_category_'+ value.id +'" class="li-list-general">' +
+                             '<div id="category_display_'+ value.id +'" class="li-list-general-div">' +
+                                '<a id="category_' + value.id +'" href="#" class="entity-general-name">' +  value.name +'</a>' +
+                                '<a id="delete_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
+                                  '<img src="/images/delete.png" title="delete category" class="entity-general-button"/>' +
+                                '</a>' +
+                                '<a id="edit_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
+                                 '<img src="/images/edit.png" title="edit category" class="entity-general-button"/>' +
+                                '</a>' +
+                             '</div>' +
+                             '<div id="editCategory" style="display: none;" class="li-list-general-div">' +
+                                '<input id="' + value.id +'" value="" class="list-new-input"/>' +
+                                '<a id="update_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
+                                '<img src="/images/edit.png" title="update category" class="entity-general-button"/>' +
+                                '</a>' +
+                             '</div>' +
+                           '</li>'
+            });
+
+            $("#ulCategories").append(strHTML);
+        }
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)
         {
