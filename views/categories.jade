@@ -19,10 +19,10 @@ block content
               a(id="category_#{cat.id}" href='#' class="entity-general-name") #{cat.name}
               a(id="delete_category_#{cat.id}" href='#' class="entit-general-fl-right")
                 img(class="entity-general-button" src="/images/delete.png" title='delete category')
-              a(id="edit_category_#{cat.id}" href="#" class="entit-general-fl-right")
+              a(id="category_edit_#{cat.id}" href="#" class="entit-general-fl-right")
                 img(class="entity-general-button" src="/images/edit.png" title="edit category")
-            div(id="editCategory" class="li-list-general-div" style="display: none;")
-              input(id="#{cat.id}" class="list-new-input" value="#{cat.name}")
+            div(id="div_category_edit_#{cat.id}" class="li-list-general-div" style="display: none;")
+              input(id="input_category_edit_#{cat.id}" class="list-new-input" value="#{cat.name}")
               a(id="update_category_#{cat.id}" href="#" class="entit-general-fl-right")
                 img(class="entity-general-button" src="/images/edit.png" title="update category")
   

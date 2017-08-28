@@ -65,6 +65,8 @@ app.use('/getCategories', categories);
 app.use('/createCategory', categories);
 app.use('/getItemsByCategoryID', categories);
 app.use('/setItemCategoryID', categories);
+app.use('/removeCategory', categories);
+app.use('/updateCategory', categories);
 
 //index
 app.use('/', index);

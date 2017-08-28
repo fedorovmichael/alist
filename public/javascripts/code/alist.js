@@ -180,7 +180,23 @@
                 $('#hdnSelectedCategory').val(id);                    
                 getItemsByCategoryID(id);
                 setSelectedList("ulCategories", "li_category_" + id); 
-            });               
+            });
+            
+            $("body").on("click", "a[id^='delete_category_']", function(event){
+                event.preventDefault();
+                removeCategory(this.id);
+            });
+            
+            $("body").on("click", "a[id^='category_edit_']", function(event){
+                event.preventDefault();
+                categoryModeHandler(this.id, 'edit');
+            });
+            
+            $("body").on("click", "a[id^='update_category_']", function(event){
+                event.preventDefault();
+                updateCategory(this.id);                
+            }); 
+            
         });
 
 
@@ -804,6 +820,22 @@
         {
             //TODO: display message on error
         }
+
+        function removeCategory(categoryID)
+        {
+            var data = {};            
+            data.id = categoryID.split('_')[2];            
+            sendDataToServer("/categories/removeCategory", data, successRemoveCategory, errorRemoveCategory);     
+        }
+
+        function successRemoveCategory()
+        {
+            var data = {};
+            sendDataToServer("/categories/getCategories", data, createHTMLCategories, null);
+        }
+
+        function errorRemoveCategory()
+        {}
         
         function getItemsByCategoryID(categoryID)
         {
@@ -876,16 +908,16 @@
             $.each(data.categories, function(index, value){
                 strHTML += '<li id="li_category_'+ value.id +'" class="li-list-general">' +
                              '<div id="category_display_'+ value.id +'" class="li-list-general-div">' +
-                                '<a id="category_' + value.id +'" href="#" class="entity-general-name">' +  value.name +'</a>' +
+                                '<a id="category_' + value.id +'" href="#" class="entity-general-name">'+ value.name +'</a>' +
                                 '<a id="delete_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
                                   '<img src="/images/delete.png" title="delete category" class="entity-general-button"/>' +
                                 '</a>' +
-                                '<a id="edit_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
+                                '<a id="category_edit_' + value.id +'" href="#" class="entit-general-fl-right">' +
                                  '<img src="/images/edit.png" title="edit category" class="entity-general-button"/>' +
                                 '</a>' +
                              '</div>' +
-                             '<div id="editCategory" style="display: none;" class="li-list-general-div">' +
-                                '<input id="' + value.id +'" value="" class="list-new-input"/>' +
+                             '<div id="div_category_edit_' + value.id +'" style="display: none;" class="li-list-general-div">' +
+                                '<input id="input_category_edit_' + value.id +'" value="'+ value.name +'" class="list-new-input"/>' +
                                 '<a id="update_category_' + value.id +'" href="#" class="entit-general-fl-right">' +
                                 '<img src="/images/edit.png" title="update category" class="entity-general-button"/>' +
                                 '</a>' +
@@ -895,6 +927,39 @@
 
             $("#ulCategories").append(strHTML);
         }
+
+        function categoryModeHandler(categoryID, mode)
+        {
+            var id = categoryID.split('_')[2];
+
+            if(mode == 'display'){
+                $("#category_display_" + id).show();
+                $("#div_category_edit_" + id).hide();
+            }
+            else if(mode == 'edit'){
+                $("#category_display_" + id).hide();
+                $("#div_category_edit_" + id).show();
+            }
+        }
+
+        function updateCategory(categoryID)
+        {
+            var id = categoryID.split('_')[2];
+            var name = $("#input_category_edit_" + id).val();
+            var data = {id: id, name: name };            
+            
+            sendDataToServer("/categories/updateCategory", data, successUpdateCategory, errorUpdateCategory);
+        }
+
+        function successUpdateCategory()
+        {
+            var data = {};
+            sendDataToServer("/categories/getCategories", data, createHTMLCategories, null);
+            categoryModeHandler(this.id, 'display');
+        }
+
+        function errorUpdateCategory()
+        {}
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)
         {

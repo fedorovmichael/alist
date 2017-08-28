@@ -158,4 +158,51 @@ router.post('/setItemCategoryID', function(req, res, next){
     });
 });
 
+router.post('/removeCategory', function(req, res, next) {
+    
+    var categoryID = req.body.id;
+    
+    async.series([
+        function removeCategoryFromDB(callback)
+        {
+            db_categories.removeCategory(categoryID, function(err, resultRemoveCategory){
+                  if(err){
+                      console.log("remove category from db error: ", err);
+                      callback(err, null); 
+                      return;
+                 }
+  
+                 callback(null, resultRemoveCategory);
+              })        
+        }
+    ], 
+    function(err, result){
+        res.json({ result: result[0] });
+    });
+});
+
+router.post('/updateCategory', function(req, res, next) {
+    
+    var categoryID = req.body.id, categoryName = req.body.name;
+    
+    async.series([
+        function updateCategoryInDB(callback)
+        {
+            db_categories.updateCategory(categoryID, categoryName, function(err, resultUpdateCategory){
+                  if(err){
+                      console.log("update category in db error: ", err);
+                      callback(err, null); 
+                      return;
+                 }
+  
+                 callback(null, resultUpdateCategory);
+              })        
+        }
+    ], 
+    function(err, result){
+        res.json({ result: result[0] });
+    });
+});
+
+
 module.exports = router;

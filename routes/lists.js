@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/database.js');
+var db_categories = require('../db/database_categories.js');
 var device = require('express-device');
 var google = require('../google_sheets/data_provider.js');
+var async = require('async');
 
 router.use(device.capture());
 device.enableDeviceHelpers(router);
@@ -50,11 +52,56 @@ router.post('/updateList', function(req, res, next) {
   console.log('finish update');
 });
 
-router.use('/getListItems', db.getListItems);
+// router.use('/getListItems', db.getListItems);
+
+// router.post('/getListItems', function(req, res, next) {
+//   console.log("get items list");
+//   db.getListItems();
+//   console.log('finish get items list');
+// });
 
 router.post('/getListItems', function(req, res, next) {
+  
+  var listID = req.body.id;
+  
+  async.series([
+    function getListItemsWithCallbackFromDB(callback)
+    {
+        db.getListItemsWithCallback(listID, function(err, resultGetListItemsWithCallback){
+              if(err){
+                  console.log("get list items from db error: ", err);
+                  callback(err, null); 
+                  return;
+             }
+
+             callback(null, resultGetListItemsWithCallback);
+          })        
+    },
+    function getCategoriesFromDB(callback)
+    {
+        db_categories.getCategories(function(err, resultGetCategories){
+              if(err){
+                  console.log("get categories list from db error: ", err);
+                  callback(err, null); 
+                  return;
+             }
+
+             callback(null, resultGetCategories);
+          })        
+    }
+], 
+function(err, result){
+    //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  //   console.log(result[0]);
+  //   console.log("");
+  var arrItems = result[0], arrCategories = result[1];
+
+    res.json({ categories: result[0] });
+});
+
+
   console.log("get items list");
-  db.getListItems();
+  db.getListItemsWithCallback();
   console.log('finish get items list');
 });
 

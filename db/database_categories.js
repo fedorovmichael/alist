@@ -60,6 +60,22 @@ db.setItemCategoryID = function(categoryID, itemID, callback)
     getMultipleResponse(callback, queryDB);
 }
 
+db.removeCategory = function(categoryID, callback)
+{
+    var queryDB = "delete from categories where id = '"+ categoryID +"'";
+    
+    console.log("query db -> " + queryDB);
+    getSingleResponse(callback, queryDB);
+}
+
+db.updateCategory = function(categoryID, categoryName, callback)
+{
+    var queryDB = "update categories set name = '"+ categoryName +"' where id = '"+ categoryID +"'";
+    
+    console.log("query db -> " + queryDB);
+    getSingleResponse(callback, queryDB);
+}
+
 //GENERAL FUNCTIONS==========================================================
 
 function getSingleResponse(cb, queryDB)

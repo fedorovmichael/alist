@@ -105,6 +105,16 @@ db.getListItems = function (req, res, next)
     getMultipleResponse(res, queryDB);
 }
 
+db.getListItemsWithCallback = function (listID, cb)
+{
+    console.log("start get items list");    
+        
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' ORDER BY selected DESC";
+
+    //console.log("query db -> " + queryDB);
+    getMultipleResponseWithCallback(cb, queryDB);
+}
+
 db.getSelectedItems = function (req, res, next)
 {
     console.log("start get selected items");    
@@ -356,6 +366,32 @@ function getMultipleResponse(res, queryDB)
             }
             console.log("retrieved rows -> ", result);
             res.json({data: result.rows});
+        });
+    });   
+}
+
+function getMultipleResponseWithCallback(cb, queryDB)
+{
+   pool.connect(function(err, client, done){
+        if(err)
+        {
+            console.error("connection error -> " + err);
+        }
+        else
+        {
+            console.log("success connec to db");
+        }
+
+        client.query(queryDB, function(err, result){
+            done();
+            if(err)
+            {
+                console.error("send query error -> ", err);
+                cb(err, null);
+                return;
+            }
+            console.log("retrieved rows -> ", result);
+            cb(null, result.rows);
         });
     });   
 }
