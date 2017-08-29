@@ -62,12 +62,18 @@ router.post('/updateList', function(req, res, next) {
 
 router.post('/getListItems', function(req, res, next) {
   
-  var listID = req.body.id;
-  
+  var listID = null;
+  if(req.body.id != null || req.body.id != ""){
+    listID = req.body.id;
+  }
+  console.log("");
+  console.log("router -> getListItems: list id: ", req.body.id);
+  console.log("");
+
   async.series([
     function getListItemsWithCallbackFromDB(callback)
     {
-        db.getListItemsWithCallback(listID, function(err, resultGetListItemsWithCallback){
+        db.getListItemsWithCallback(listID, function (err, resultGetListItemsWithCallback){
               if(err){
                   console.log("get list items from db error: ", err);
                   callback(err, null); 
@@ -94,7 +100,9 @@ function(err, result){
     console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     //console.log(result[0]);
   //   console.log("");
-  var arrItems = result[0], arrCategories = result[1], dicItemsByCategoryID = { key: "wocategory", value: []};
+  var arrItems = result[0], arrCategories = result[1], dicItemsByCategoryID = {};
+  dicItemsByCategoryID["wocategory"] = [];
+  
 
   for(item in arrItems){
 
@@ -117,6 +125,8 @@ function(err, result){
       }      
     }
     else{
+      console.log("wocategory value ================: ");
+      console.log(dicItemsByCategoryID["wocategory"]);
       dicItemsByCategoryID["wocategory"].push(item);
     }
   }
