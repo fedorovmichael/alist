@@ -72,10 +72,10 @@ router.post('/getListItems', function(req, res, next) {
                   console.log("get list items from db error: ", err);
                   callback(err, null); 
                   return;
-             }
+             };
 
              callback(null, resultGetListItemsWithCallback);
-          })        
+          });        
     },
     function getCategoriesFromDB(callback)
     {
@@ -91,12 +91,39 @@ router.post('/getListItems', function(req, res, next) {
     }
 ], 
 function(err, result){
-    //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  //   console.log(result[0]);
+    console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    //console.log(result[0]);
   //   console.log("");
-  var arrItems = result[0], arrCategories = result[1];
+  var arrItems = result[0], arrCategories = result[1], dicItemsByCategoryID = { key: "wocategory", value: []};
 
-    res.json({ categories: result[0] });
+  for(item in arrItems){
+
+      if(item.category_id !='' && item.category_id != null && item.category_id != undefined){
+      
+        var index = arrCategories.findIndex(x => x.id === item.category_id);
+
+      if(index != -1){
+
+        var catName = arrCategories[index].name;
+        item.category_name = catName;
+
+        if (!dicItemsByCategoryID.hasOwnProperty(arrCategories[index].id)) {
+          dicItemsByCategoryID.key = arrCategories[index].id;
+          dicItemsByCategoryID[arrCategories[index].id].value = [item];
+        }
+        else{
+          dicItemsByCategoryID[arrCategories[index].id].value.push(item);
+        }
+      }      
+    }
+    else{
+      dicItemsByCategoryID["wocategory"].push(item);
+    }
+  }
+  
+  console.log("categories with items: +++++++++++++++++++++++++++++++++");
+  console.log(dicItemsByCategoryID);
+  res.json({ listItems: dicItemsByCategoryID });
 });
 
 

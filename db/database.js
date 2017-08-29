@@ -105,14 +105,14 @@ db.getListItems = function (req, res, next)
     getMultipleResponse(res, queryDB);
 }
 
-db.getListItemsWithCallback = function (listID, cb)
+db.getListItemsWithCallback = function(listID, callback)
 {
-    console.log("start get items list");    
+    console.log("start get items list with callback");    
         
     var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' ORDER BY selected DESC";
 
-    //console.log("query db -> " + queryDB);
-    getMultipleResponseWithCallback(cb, queryDB);
+    console.log("query db -> " + queryDB);
+    getMultipleResponseWithCallback(callback, queryDB);
 }
 
 db.getSelectedItems = function (req, res, next)
