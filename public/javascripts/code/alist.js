@@ -293,23 +293,33 @@
 
         function createHTMLFullList(arrListItems)
         {
-            var html = '<p class="count-items">Items: '+ arrListItems.length +' </p>';
-            $("#containerFullList").empty(); 
-            $("#containerFullList").html('');             
+            try{            
+                var html = '<p class="count-items">Items: '+ arrListItems.length +' </p>';
+                $("#containerFullList").empty(); 
+                $("#containerFullList").html('');             
+                $.each(arrListItems, function(catIndex, catValue){
 
-            $.each(arrListItems, function(i, item)
-            {
-                var id = item.id;
-                var fullNameId = "name_" + id;
-                var fullCountId = "count_" + id;
-                var cbSelected = item.selected == true ? "checked" : ""; 
-                html += "<div class='form-inline1 div-general-entity-container'>" +
-                        "<div class='form-group1 div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"' title='"+ item.name +"' data-toggle='tooltip'>"+ item.name +"</span></div>" +
-                        "<span class='entit-general-fl-right span-full-item-select'><input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+
-                        "<span class='entit-general-fl-right span-full-item-count'><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/></span>" +
-                        "</div>";
-            });
-            
+                    var categoryItems = catValue;
+                    html += "<div style='width:100%;margin-top:5px;text-align:center;'><span style='font-weight:bold;'>"+ categoryItems[0].category_name +"</span></div></br>"
+
+                    $.each(categoryItems, function(i, item)
+                    {
+                        var id = item.id;
+                        var fullNameId = "name_" + id;
+                        var fullCountId = "count_" + id;
+                        var cbSelected = item.selected == true ? "checked" : ""; 
+                        html += "<div class='form-inline1 div-general-entity-container'>" +
+                                "<div class='form-group1 div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"' title='"+ item.name +"' data-toggle='tooltip'>"+ item.name +"</span></div>" +
+                                "<span class='entit-general-fl-right span-full-item-select'><input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+
+                                "<span class='entit-general-fl-right span-full-item-count'><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/></span>" +
+                                "</div>";
+                    });
+                });
+            }
+            catch(e){
+                console.log("createHTMLFullList -> error: ", e);
+            }
+
             $("#containerFullList").html(html); 
         }
         

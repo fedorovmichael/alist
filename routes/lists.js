@@ -101,10 +101,11 @@ function(err, result){
     //console.log(result[0]);
   //   console.log("");
   var arrItems = result[0], arrCategories = result[1], dicItemsByCategoryID = {};
-  dicItemsByCategoryID["wocategory"] = [];
-  
+  dicItemsByCategoryID["wocategory"] = [];  
 
-  for(item in arrItems){
+  for(var i=0; i < arrItems.length; i++){
+
+    var item = arrItems[i];
 
       if(item.category_id !='' && item.category_id != null && item.category_id != undefined){
       
@@ -115,25 +116,43 @@ function(err, result){
         var catName = arrCategories[index].name;
         item.category_name = catName;
 
+        console.log("category name ================: ");
+        console.log(catName);
+        console.log("item value ================: ");
+        console.log(item);        
+
         if (!dicItemsByCategoryID.hasOwnProperty(arrCategories[index].id)) {
-          dicItemsByCategoryID.key = arrCategories[index].id;
-          dicItemsByCategoryID[arrCategories[index].id].value = [item];
+          //dicItemsByCategoryID.key = arrCategories[index].id;
+          dicItemsByCategoryID[arrCategories[index].id] = [];
+          dicItemsByCategoryID[arrCategories[index].id].push(item);
         }
         else{
-          dicItemsByCategoryID[arrCategories[index].id].value.push(item);
+          dicItemsByCategoryID[arrCategories[index].id].push(item);
         }
       }      
     }
     else{
-      console.log("wocategory value ================: ");
-      console.log(dicItemsByCategoryID["wocategory"]);
+      // console.log("wocategory value ================: ");
+      // //console.log(dicItemsByCategoryID["wocategory"]);
+      // console.log("item value ================: ");
+      // console.log(item);
+
       dicItemsByCategoryID["wocategory"].push(item);
     }
   }
   
-  console.log("categories with items: +++++++++++++++++++++++++++++++++");
-  console.log(dicItemsByCategoryID);
-  res.json({ listItems: dicItemsByCategoryID });
+  // console.log("categories with items: +++++++++++++++++++++++++++++++++");
+  // console.log(dicItemsByCategoryID);
+  // for(itm in dicItemsByCategoryID){
+  //   console.log("key: " , item);
+  //   console.log("value: ", dicItemsByCategoryID[itm]);
+  //   for(it in dicItemsByCategoryID[itm]){
+  //     console.log("value array: ", dicItemsByCategoryID[itm][it]);
+  //   }
+
+  // }
+    
+  res.json({ data: dicItemsByCategoryID });
 });
 
 
