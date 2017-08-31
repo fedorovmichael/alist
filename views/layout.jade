@@ -5,6 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel="stylesheet", href="/stylesheets/bootstrap-theme.min.css" )    
     link(rel="stylesheet"  href="/stylesheets/jquery-ui.css")
+    link(rel='stylesheet', href='/stylesheets/multi-select.css')
     -if(is_desktop)    
       link(rel='stylesheet', href='/stylesheets/style.css')
     -if(is_phone)
@@ -12,10 +13,10 @@ html
     script(src='/javascripts/libraries/jquery-3.1.0.min.js')
     script(src='/javascripts/libraries/jquery-ui.js')
     script(src='/javascripts/libraries/bootstrap.min.js')
+    script(src='/javascripts/libraries/jquery.multi-select.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/code/alist.js')    
-    script(src='/javascripts/code/sendSMS.js')
-
-    
+    script(src='/javascripts/code/sendSMS.js')   
+        
   body
     block content

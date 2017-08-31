@@ -105,6 +105,18 @@ db.getListItems = function (req, res, next)
     getMultipleResponse(res, queryDB);
 }
 
+db.getListItemsWithCallback = function(listID, callback)
+{
+    console.log("start get items list with callback");
+    console.log("callback function: ========================================");
+    console.log(callback);   
+        
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' ORDER BY selected DESC";
+
+    console.log("query db -> " + queryDB);
+    getMultipleResponseWithCallback(callback, queryDB);
+}
+
 db.getSelectedItems = function (req, res, next)
 {
     console.log("start get selected items");    
@@ -117,6 +129,18 @@ db.getSelectedItems = function (req, res, next)
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(res, queryDB);
+}
+
+db.getSelectedItemsWithCallback = function(listID, callback)
+{
+    console.log("start get selected items list with callback");
+    console.log("callback function: ========================================");
+    console.log(callback);   
+        
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' AND selected = true  order by complete, name ASC";
+
+    console.log("query db -> " + queryDB);
+    getMultipleResponseWithCallback(callback, queryDB);
 }
 
 db.setActiveList = function (req, res, next)
@@ -310,6 +334,8 @@ db.updateCompleteValue = function (req, res, next)
     getSingleResponse(res, queryDB);
 }
 
+//GENERAL FUNCTIONS==========================================================
+
 function getSingleResponse(res, queryDB)
 {
    pool.connect(function(err, client, done){
@@ -357,5 +383,41 @@ function getMultipleResponse(res, queryDB)
         });
     });   
 }
+
+function getMultipleResponseWithCallback(cb, queryDB)
+{
+   pool.connect(function(err, client, done){
+        if(err)
+        {
+            console.error("connection error -> " + err);
+        }
+        else
+        {
+            console.log("success connec to db");
+        }
+
+        client.query(queryDB, function(err, result){
+            done();
+            if(err)
+            {
+                console.error("send query error -> ", err);
+                cb(err, null);
+                return;
+            }
+            //console.log("retrieved rows -> ", result);
+            console.log("callback function ++++++++++++++++++++++++++++++++++++++++:");
+            console.log(cb);
+            console.log("query ++++++++++++++++++++++++++++++++++++++++:");
+            console.log(queryDB);
+            if(cb != undefined){
+                cb(null, result.rows);
+            }
+        });
+    });   
+}
+
+
+
+
 
 module.exports = db;
