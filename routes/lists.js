@@ -60,9 +60,8 @@ router.post('/updateList', function(req, res, next) {
 //   console.log('finish get items list');
 // });
 
-router.post('/getListItems', function(req, res, next) {
-  
-  var listID = null;
+router.post('/getListItems', function(req, res, next) {  
+  var listID = null, arrItems = [], arrCategories = [];
   if(req.body.id != null || req.body.id != ""){
     listID = req.body.id;
   }
@@ -79,7 +78,7 @@ router.post('/getListItems', function(req, res, next) {
                   callback(err, null); 
                   return;
              };
-
+             arrItems = resultGetListItemsWithCallback;
              callback(null, resultGetListItemsWithCallback);
           });        
     },
@@ -92,73 +91,25 @@ router.post('/getListItems', function(req, res, next) {
                   return;
              }
 
+             arrCategories = resultGetCategories;
              callback(null, resultGetCategories);
           })        
+    },
+    function setCategories(callback)
+    {
+       orderByCategory(arrCategories, arrItems, function(err, resultOrderByCategory){
+         if(err){
+            console.log("order items by categories error: ", err);
+            callback(err, null); 
+            return;
+         }
+         callback(null, resultOrderByCategory);
+       });
     }
-], 
-function(err, result){
-    console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    //console.log(result[0]);
-  //   console.log("");
-  var arrItems = result[0], arrCategories = result[1], dicItemsByCategoryID = {};
-  dicItemsByCategoryID["wocategory"] = [];  
-
-  for(var i=0; i < arrItems.length; i++){
-
-    var item = arrItems[i];
-
-      if(item.category_id !='' && item.category_id != null && item.category_id != undefined){
-      
-        var index = arrCategories.findIndex(x => x.id === item.category_id);
-
-      if(index != -1){
-
-        var catName = arrCategories[index].name;
-        item.category_name = catName;
-
-        console.log("category name ================: ");
-        console.log(catName);
-        console.log("item value ================: ");
-        console.log(item);        
-
-        if (!dicItemsByCategoryID.hasOwnProperty(arrCategories[index].id)) {
-          //dicItemsByCategoryID.key = arrCategories[index].id;
-          dicItemsByCategoryID[arrCategories[index].id] = [];
-          dicItemsByCategoryID[arrCategories[index].id].push(item);
-        }
-        else{
-          dicItemsByCategoryID[arrCategories[index].id].push(item);
-        }
-      }      
-    }
-    else{
-      // console.log("wocategory value ================: ");
-      // //console.log(dicItemsByCategoryID["wocategory"]);
-      // console.log("item value ================: ");
-      // console.log(item);
-
-      dicItemsByCategoryID["wocategory"].push(item);
-    }
-  }
-  
-  // console.log("categories with items: +++++++++++++++++++++++++++++++++");
-  // console.log(dicItemsByCategoryID);
-  // for(itm in dicItemsByCategoryID){
-  //   console.log("key: " , item);
-  //   console.log("value: ", dicItemsByCategoryID[itm]);
-  //   for(it in dicItemsByCategoryID[itm]){
-  //     console.log("value array: ", dicItemsByCategoryID[itm][it]);
-  //   }
-
-  // }
-    
-  res.json({ data: dicItemsByCategoryID });
-});
-
-
-  console.log("get items list");
-  db.getListItemsWithCallback();
-  console.log('finish get items list');
+  ], 
+  function(err, result){   
+    res.json({ data: result[2], countItems: result[0].length });
+  });
 });
 
 router.use('/setActiveList', db.setActiveList);
@@ -219,12 +170,64 @@ router.post('/setSelectedAndCountItem', function(req, res, next) {
   console.log('finish set selected and count for item');
 });
 
-router.use('/getSelectedItems', db.getSelectedItems);
+// router.use('/getSelectedItems', db.getSelectedItems);
 
-router.post('/getSelectedItems', function(req, res, next) {
-  console.log("get selected items");
-  db.getSelectedItems();
-  console.log('finish retrieve selected items');
+// router.post('/getSelectedItems', function(req, res, next) {
+//   console.log("get selected items");
+//   db.getSelectedItems();
+//   console.log('finish retrieve selected items');
+// });
+
+router.post('/getSelectedItems', function(req, res, next) {  
+  var listID = null, arrItems = [], arrCategories = [];
+  if(req.body.id != null || req.body.id != ""){
+    listID = req.body.id;
+  }
+  console.log("");
+  console.log("router -> getSelectedItems: list id: ", req.body.id);
+  console.log("");
+
+  async.series([
+    function getSelectedItemsWithCallbackFromDB(callback)
+    {
+        db.getSelectedItemsWithCallback(listID, function (err, resultGetSelectedItems){
+              if(err){
+                  console.log("get list selected items from db error: ", err);
+                  callback(err, null); 
+                  return;
+             };
+             arrItems = resultGetSelectedItems;
+             callback(null, resultGetSelectedItems);
+          });        
+    },
+    function getCategoriesFromDB(callback)
+    {
+        db_categories.getCategories(function(err, resultGetCategories){
+              if(err){
+                  console.log("get categories list from db error: ", err);
+                  callback(err, null); 
+                  return;
+             }
+
+             arrCategories = resultGetCategories;
+             callback(null, resultGetCategories);
+          })        
+    },
+    function setCategories(callback)
+    {
+       orderByCategory(arrCategories, arrItems, function(err, resultOrderByCategory){
+         if(err){
+            console.log("order items by categories error: ", err);
+            callback(err, null); 
+            return;
+         }
+         callback(null, resultOrderByCategory);
+       });
+    }
+  ], 
+  function(err, result){   
+    res.json({ data: result[2], countItems: result[0].length });
+  });
 });
 
 router.use('/updateCountItem', db.updateCountItem);
@@ -250,5 +253,48 @@ router.post('/updateCompleteValue', function(req, res, next) {
   db.updateCompleteValue();
   console.log('finish update complete value');
 });
+
+function orderByCategory(arrCategoriesIn, arrItemsIn, callback){
+  try{
+      var arrItems = arrItemsIn, arrCategories = arrCategoriesIn, dicItemsByCategoryID = {};        
+    
+      for(var i=0; i < arrItems.length; i++){
+    
+        var item = arrItems[i];
+    
+          if(item.category_id !='' && item.category_id != null && item.category_id != undefined){
+          
+            var index = arrCategories.findIndex(x => x.id === item.category_id);
+    
+          if(index != -1){
+    
+            var catName = arrCategories[index].name;
+            item.category_name = catName;           
+    
+            if (!dicItemsByCategoryID.hasOwnProperty(arrCategories[index].id)) {          
+                dicItemsByCategoryID[arrCategories[index].id] = [];
+                dicItemsByCategoryID[arrCategories[index].id].push(item);
+            }
+            else{
+              dicItemsByCategoryID[arrCategories[index].id].push(item);
+            }
+          }      
+        }
+        else{
+          if (!dicItemsByCategoryID.hasOwnProperty("wocategory")){
+              dicItemsByCategoryID["wocategory"] = [];              
+          }       
+          item.category_name = "ללא קטגוריה";  
+          dicItemsByCategoryID["wocategory"].push(item);
+        }
+      }
+      
+      callback(null, dicItemsByCategoryID);
+  }
+  catch(e){
+    callback(e, null);
+  }
+}
+
 
 module.exports = router;

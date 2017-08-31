@@ -226,11 +226,12 @@
             try{
                     arrListItems = [];
                     arrListItems = response.data;
+                    var countItems = response.countItems;
 
                     $("#containerSelectedList").hide();
                     $("#containerFullList").show();
                     var html = '';
-                    html = createHTMLFullList(arrListItems);                 
+                    html = createHTMLFullList(arrListItems, countItems);                 
                 
             }
             catch(e){}
@@ -291,10 +292,10 @@
             return Math.random().toString(36).substr(2, 9);
         }
 
-        function createHTMLFullList(arrListItems)
+        function createHTMLFullList(arrListItems, countItems)
         {
             try{            
-                var html = '<p class="count-items">Items: '+ arrListItems.length +' </p>';
+                var html = '<p class="count-items">Items: '+ countItems +' </p>';
                 $("#containerFullList").empty(); 
                 $("#containerFullList").html('');             
                 $.each(arrListItems, function(catIndex, catValue){
@@ -326,38 +327,44 @@
         function generateSelectedList(selListItems)
         {
             selectedList = [];
-            selectedList = selListItems.data; 
+            selectedList = selListItems.data;
+            var countItems = selListItems.countItems; 
 
             $("#containerFullList").hide();
             $("#containerSelectedList").show();
             var html = '';
-            createHTMLSelectedList(selectedList);                
+            createHTMLSelectedList(selectedList, countItems);                
         }
 
-        function createHTMLSelectedList(listItems)
+        function createHTMLSelectedList(listItems, countItems)
         {            
-            var html = '<p id="pSelectedCount" class="count-items"><span id="spanSelectedCount">Items: '+ listItems.length +'</span>&nbsp;&nbsp;<span id="spanSelectedCountComplete"></span></p>';
+            var html = '<p id="pSelectedCount" class="count-items"><span id="spanSelectedCount">Items: '+ countItems +'</span>&nbsp;&nbsp;<span id="spanSelectedCountComplete"></span></p>';
             var arrCompliteItems = [];
             $("#containerSelectedList").empty();
             $("#containerSelectedList").html('');                
-
-            $.each(listItems, function(i, item)
-            {
-                var id = item.id;
-                var fullNameId = "name_" + id;
-                var fullCountId = "count_" + id;
-                var selectedCountId = generateId();
-                html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
-                        "<div class='form-group div-selected-entity-name' style='display: inline-block;'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                        "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
-                        "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='/images/complete.png' class='entity-general-button' title='complite item'/></a>"+
-                        "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='/images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
-                        "</div>";
-                if(item.complete)
+            $.each(listItems, function(catIndex, catValue){
+                
+               var categoryItems = catValue;
+               html += "<div style='width:100%;margin-top:5px;text-align:center;'><span style='font-weight:bold;'>"+ categoryItems[0].category_name +"</span></div></br>"
+                
+                $.each(categoryItems, function(i, item)
                 {
-                    arrCompliteItems.push('btnComplite_'+ id);
-                }
-            });
+                    var id = item.id;
+                    var fullNameId = "name_" + id;
+                    var fullCountId = "count_" + id;
+                    var selectedCountId = generateId();
+                    html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
+                            "<div class='form-group div-selected-entity-name' style='display: inline-block;'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
+                            "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='/images/complete.png' class='entity-general-button' title='complite item'/></a>"+
+                            "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='/images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
+                            "</div>";
+                    if(item.complete)
+                    {
+                        arrCompliteItems.push('btnComplite_'+ id);
+                    }
+                });
+            });    
             
             $("#containerSelectedList").html(html);
             $("#spanSelectedCountComplete").text("Completed: " + arrCompliteItems.length);

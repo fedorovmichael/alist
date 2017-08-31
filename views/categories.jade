@@ -1,6 +1,14 @@
 extends layout  
-block content  
-  h1 categories
+block content 
+  nav(class="navbar" style="width:300px; border: solid 0px red;")
+    div(class="container")     
+      ul(class="nav navbar-nav")          
+        li(class="list-menu-li" style="float:left;")
+          a(id="aCatHome" href="/" class="list-menu-li" title="Home" )
+            span(class="glyphicon glyphicon-home list-menu-span")
+        li(class="list-menu-li" style="float:left;")
+          a(id="aCatList" href="/lists" class="list-menu-li" title="lists" )
+            span(class="glyphicon glyphicon-th-list list-menu-span")
   input(id="hdnSelectedCategory" type="hidden")
   div(id="divCategoriesContainer" class="panel panel-default div-entity-container div-margin-right-20")  
     div(class="panel-body div-entity-body")

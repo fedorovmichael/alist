@@ -131,6 +131,18 @@ db.getSelectedItems = function (req, res, next)
     getMultipleResponse(res, queryDB);
 }
 
+db.getSelectedItemsWithCallback = function(listID, callback)
+{
+    console.log("start get selected items list with callback");
+    console.log("callback function: ========================================");
+    console.log(callback);   
+        
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' AND selected = true  order by complete, name ASC";
+
+    console.log("query db -> " + queryDB);
+    getMultipleResponseWithCallback(callback, queryDB);
+}
+
 db.setActiveList = function (req, res, next)
 {
     console.log("start update");    
