@@ -537,21 +537,26 @@
             var items = $("#ulEditItems");
             var html = '';
             items.empty();
+            $.each(arrListItems, function(catIndex, catValue){
+                
+               var categoryItems = catValue;
+               html += "<div style='width:100%;margin-top:5px;text-align:center;'><span style='font-weight:bold;'>"+ categoryItems[0].category_name +"</span></div></br>"
 
-            $.each(arrListItems, function(index, value){
+                $.each(categoryItems, function(index, value){
 
-                var cbSelected = value.selected == true ? "checked" : "";
+                    var cbSelected = value.selected == true ? "checked" : "";
 
-                html += "<li id='" + value.id + "' class='li-list-general'>" + 
-                    "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
-                        "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
-                        "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
-                        "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.name +" " + cbSelected + ">"+  
-                        "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/delete.png' title='delete item'></a>" + 
-                        "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update item'></a>" + 
-                    "</div>" +
-                "</li>"; 
-            })
+                    html += "<li id='" + value.id + "' class='li-list-general'>" + 
+                        "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
+                            "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
+                            "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
+                            "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.name +" " + cbSelected + ">"+  
+                            "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/delete.png' title='delete item'></a>" + 
+                            "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update item'></a>" + 
+                        "</div>" +
+                    "</li>"; 
+                });
+            });
             
             items.append(html);
         }
