@@ -36,9 +36,13 @@ db.createCategory = function (category, callback)
     getSingleResponse(callback, queryDB);
 }
 
-db.getItems = function (callback)
+db.getItems = function (listID, callback)
 {
     var queryDB = "select * from list_items";
+
+    if(listID != null){
+        queryDB = "select * from list_items where list_id = '"+ listID +"'";
+    }
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(callback, queryDB);

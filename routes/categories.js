@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
       },
       function getItemsFromDB(callback)
       {
-          db_categories.getItems(function(err, resultGetItems){
+          db_categories.getItems(null, function(err, resultGetItems){
                 if(err){
                     console.log("get items list from db error: ", err);
                     callback(err, null); 
@@ -34,13 +34,25 @@ router.get('/', function(req, res, next) {
 
                callback(null, resultGetItems);
             }) 
+      },
+      function getListsFromDB(callback)
+      {          
+          db.getListsWithCallback(function(err, resultGetLists){
+                if(err){
+                    console.log("get lists from db error: ", err);
+                    callback(err, null); 
+                    return;
+               }
+
+               callback(null, resultGetLists);
+            })
       }
   ], 
   function(err, result){
       //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     //   console.log(result[0]);
     //   console.log("");
-      res.render('categories', { categories: result[0], items: result[1] });
+      res.render('categories', { categories: result[0], items: result[1], lists: result[2] });
   });  
   
 });
@@ -100,11 +112,16 @@ router.post('/createCategory', function(req, res, next) {
 router.post('/getItemsByCategoryID', function(req, res, next){
     
     var catergoryID = req.body.id;
+    var listID = req.body.listID;
+
+    console.log("");
+    console.log("+++++++++++++++++++++++++++++++++++++ list id: ", listID);
+    console.log("");
 
     async.series([
         function getItemsByCategoryIDFromDB(callback)
         {
-            db_categories.getItems(function(err, resultGetItems){
+            db_categories.getItems(listID, function(err, resultGetItems){
                 if(err){
                     console.log("get items list from db error: ", err);
                     callback(err, null); 
@@ -202,6 +219,12 @@ router.post('/updateCategory', function(req, res, next) {
     function(err, result){
         res.json({ result: result[0] });
     });
+});
+
+router.post('/getCategoriesListByListID', function(req, res, next){
+  console.log("get items list");
+  db.getListItems(req, res, next);
+  console.log('finish get items list');
 });
 
 

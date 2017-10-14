@@ -67,6 +67,8 @@ app.use('/getItemsByCategoryID', categories);
 app.use('/setItemCategoryID', categories);
 app.use('/removeCategory', categories);
 app.use('/updateCategory', categories);
+app.use('/getCategoriesListByListID', categories);
+
 
 //index
 app.use('/', index);

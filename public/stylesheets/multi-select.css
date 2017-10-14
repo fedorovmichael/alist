@@ -1,6 +1,6 @@
 .ms-container{
   background: transparent url('../img/switch.png') no-repeat 50% 50%;
-  width: 370px;
+  width: 486px;
 }
 
 .ms-container:after{
@@ -18,7 +18,7 @@
   background: #fff;
   color: #555555;
   float: left;
-  width: 45%;
+  width: 47%;
 }
 .ms-container .ms-selection{
   float: right;
@@ -38,7 +38,7 @@
   -moz-border-radius: 3px;
   border-radius: 3px;
   position: relative;
-  height: 200px;
+  height: 600px;
   padding: 0;
   overflow-y: auto;
 }

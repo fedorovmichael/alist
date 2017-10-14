@@ -38,6 +38,14 @@ db.select = function (req, res, next)
     getMultipleResponse(res, queryDB);    
 }
 
+db.getListsWithCallback = function(callback)
+{
+    var queryDB = "SELECT * FROM list";
+
+    console.log("connect to db");
+    getMultipleResponseWithCallback(callback, queryDB);
+}
+
 
 db.create = function (req, res, next)
 {
@@ -415,9 +423,5 @@ function getMultipleResponseWithCallback(cb, queryDB)
         });
     });   
 }
-
-
-
-
 
 module.exports = db;

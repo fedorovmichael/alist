@@ -1,5 +1,7 @@
 extends layout  
-block content 
+block content
+  input(id="hdnSelectedCategory" type="hidden")
+  input(id="hdnSelectedCategoryList" type="hidden")
   nav(class="navbar" style="width:300px; border: solid 0px red;")
     div(class="container")     
       ul(class="nav navbar-nav")          
@@ -9,7 +11,17 @@ block content
         li(class="list-menu-li" style="float:left;")
           a(id="aCatList" href="/lists" class="list-menu-li" title="lists" )
             span(class="glyphicon glyphicon-th-list list-menu-span")
-  input(id="hdnSelectedCategory" type="hidden")
+  
+  div(class="dropdown" style="margin-bottom:10px;")
+    button(class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width:300px;")
+      span(id="spanCategoryListText" style="margin-right:20px;") Select list 
+      span(class="caret")
+    ul(class="dropdown-menu")
+      each list in lists
+        li(id="liCategoriList_#{list.id}")
+          a(id="aCategoriList_#{list.id}" href="#") #{list.name}
+     
+  
   div(id="divCategoriesContainer" class="panel panel-default div-entity-container div-margin-right-20")  
     div(class="panel-body div-entity-body")
       input(id="txtCategoryName" type="textbox" class="list-new-input")
@@ -34,7 +46,7 @@ block content
               a(id="update_category_#{cat.id}" href="#" class="entit-general-fl-right")
                 img(class="entity-general-button" src="/images/edit.png" title="update category")
   
-  div(id="divAvailableItems" class="div-entity-body div-entity-container" style="width:383px; padding:5px;")
+  div(id="divAvailableItems" class="div-entity-body div-entity-container" style="width:500px; padding:5px;")
     select(id='selAvailableItems' multiple='multiple')
       each item in items
         option(itemID="#{item.id}" value="#{item.id}") #{item.name}

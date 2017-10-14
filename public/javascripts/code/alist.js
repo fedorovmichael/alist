@@ -195,6 +195,11 @@
             $("body").on("click", "a[id^='update_category_']", function(event){
                 event.preventDefault();
                 updateCategory(this.id);                
+            });
+
+            $("body").on("click", "li[id^='liCategoriList_']", "a[id^='aCategoriList_']", function(event){
+                var listID = this.id.split("_")[1];
+                categoryListFilter(listID);
             }); 
             
         });
@@ -861,9 +866,14 @@
         
         function getItemsByCategoryID(categoryID)
         {
-            var data = {};            
-            data.id = categoryID;
+            var data = {}, listID = null;
 
+            if($("#hdnSelectedCategoryList").val() != ''){
+                listID = $("#hdnSelectedCategoryList").val();
+            }
+            
+            data.id = categoryID;
+            data.listID = listID;
             sendDataToServer("/categories/getItemsByCategoryID", data, successGetItemsByCategoryID, errorGetItemsByCategoryID);
         }
 
@@ -982,6 +992,36 @@
 
         function errorUpdateCategory()
         {}
+
+        function categoryListFilter(listID){
+            try {
+                 $("#hdnSelectedCategoryList").val(listID);
+                 var selectedListText = $("#aCategoriList_" + listID).text();
+                 $("#spanCategoryListText").text(selectedListText);
+                 var data = {};
+                 data.id = listID;
+                 sendDataToServer('/categories/getCategoriesListByListID', data, successCategoryListFilter, '');
+            } 
+            catch (error) {
+                
+            }            
+        }
+
+        function successCategoryListFilter(response){
+            var arrCategoryListItems = response.data;
+
+            var strOptions = '';
+            $("#selAvailableItems").empty();
+            $("#selAvailableItems option").remove(); 
+
+            $.each(arrCategoryListItems, function(i,v){
+                strOptions += "<option itemID='"+ v.id +"' value='"+ v.id +"' >"+ v.name +"</option>"
+            });            
+
+            $('#selAvailableItems').append(strOptions);
+            $('#selAvailableItems').multiSelect('refresh');
+
+        }
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)
         {
