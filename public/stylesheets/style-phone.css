@@ -298,3 +298,7 @@ a {
 {
   display: none;
 }
+
+a[id^="delete_"] {
+  display: none;
+}
