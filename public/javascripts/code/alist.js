@@ -524,8 +524,7 @@
                         "<a id='edit_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='edit list'></a>" + 
                     "</div>"+
                     "<div id='editList_" + value.id + "' class='li-list-general-div' style='display: none;'>" +
-                        "<input id='" + value.id + "' class='list-new-input' value='"+ value.name +"'/>" +
-                        "<input id='cb_"+ value.id +"' class='input-cb-count' type='checkbox' onclick='setListActiveCheckbox(this, this.id);' value='' "+ cbSelected+ ">" +                    
+                        "<input id='" + value.id + "' class='list-new-input' value='"+ value.name +"'/>" +                                           
                         "<a id='update_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update list'></a>" + 
                     "</div>"+
                 "</li>"; 
@@ -607,13 +606,11 @@
 
         function updateList(id)
         {
-            var listName = $("#editList_" + id + " input").val();                
-            var active = $('#cb_' + id).is(":checked");
+            var listName = $("#editList_" + id + " input").val();               
 
             var data = {};
             data.id = id;
-            data.name = listName;
-            data.active = active;
+            data.name = listName;           
 
                 $.ajax({
                 url: '/lists/updateList',
@@ -710,11 +707,12 @@
 
         function getSelectedListItems(listID)
         {
-            try {
-                    var data = {};
-                    data.id = listID;
+            try {                    
+                    var data = {id: listID, selected: true };
+                    
                     sendDataToServer('/lists/getListItems', data, generateAlist, '');
                     sendDataToServer('/lists/getSelectedItems', data, generateSelectedList, '');
+                    sendDataToServer('/lists/setActiveList', data, '', '');
                     
             }
             catch(e){}

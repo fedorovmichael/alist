@@ -302,3 +302,7 @@ a {
 a[id^="delete_"] {
   display: none;
 }
+
+a[id^="edit_"] {
+  display: none;
+}

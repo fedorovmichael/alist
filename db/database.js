@@ -84,16 +84,9 @@ db.update = function (req, res, next)
     console.log("params ->  name: " + req.body.name);
 
     var id = req.body.id;
-    var name = req.body.name;
-    var active = req.body.active;
-    var refreshActive = "";
-    
-    if(active)
-    {
-        refreshActive = "UPDATE list SET active = false;";
-    }
+    var name = req.body.name;   
 
-    var queryDB = refreshActive + " UPDATE list SET name = '"+ name +"', active = "+ active +" WHERE id = '" + id + "';";
+    var queryDB = " UPDATE list SET name = '"+ name +"' WHERE id = '" + id + "';";
 
     console.log("query db -> " + queryDB);
     getSingleResponse(res, queryDB);   
@@ -161,8 +154,8 @@ db.setActiveList = function (req, res, next)
     var id = req.body.id; 
     var selected = req.body.selected;
     
-    var queryDB = "UPDATE list SET active = " + selected +
-    " WHERE id = '" + id + "'";
+    var queryDB = "UPDATE list SET active = false; UPDATE list SET active = " + selected +
+    " WHERE id = '" + id + "';";
 
     console.log("query db -> " + queryDB);
     getSingleResponse(res, queryDB);   
