@@ -106,8 +106,8 @@ a {
 /* Full Item  */
 .div-full-entity-name
 {
-  width:210px;
-  min-width:210px;
+  width:180px;
+  min-width:180px;
   /*float: left;*/
   margin-left: 10px; 
   padding-top: 4px;
@@ -119,7 +119,7 @@ a {
 .input-cb-count
 {
   margin-top: 10px;
-  margin-left: 5px;
+  margin-left: 5px  !important;
 }
 
 .span-full-item-select
@@ -135,8 +135,8 @@ a {
 /* Selected Item  */
 .div-selected-entity-name
 {
-  width:190px; 
-  min-width:190px;
+  width:160px; 
+  min-width:160px;
   /*float: left;*/
   margin-left: 10px; 
   /*padding-top: 4px;*/
@@ -305,4 +305,47 @@ a[id^="delete_"] {
 
 a[id^="edit_"] {
   display: none;
+}
+
+#ulEditItems .input-general-entity-count {
+  margin-top: 1px;
+  margin-left: 5px;
+}
+
+#ulEditItems .item-edit-name{
+  margin-left: 5px;
+}
+
+#ulEditItems{
+  width: 330px;
+  margin: auto;
+}
+
+#containerEditList{
+  text-align: center;
+}
+
+#containerEditList{
+  background-color: #fffde7;
+}
+
+#divEditItems.div-entity-body.div-entity-container.hide-list-container{
+  width: 350px;
+}
+
+#ulEditItems .li-list-general .li-list-general-div.list-padding-auto{
+  width: 345px;
+}
+
+#txtEditNewItemMeasure{
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.entity-general-name-left-5
+{  
+  margin-left:0px;
+  color: #000;
+  display: inline;
 }

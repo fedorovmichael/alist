@@ -126,7 +126,7 @@ db.getSelectedItems = function (req, res, next)
     
     var id = req.body.id;
         
-    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  order by complete, name ASC";
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + id + "' AND selected = true  ";
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(res, queryDB);
@@ -138,7 +138,7 @@ db.getSelectedItemsWithCallback = function(listID, callback)
     console.log("callback function: ========================================");
     console.log(callback);   
         
-    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' AND selected = true  order by complete, name ASC";
+    var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' AND selected = true ";
 
     console.log("query db -> " + queryDB);
     getMultipleResponseWithCallback(callback, queryDB);
@@ -222,15 +222,17 @@ db.getSelectedItemsAndPhones = function (req, res, next)
 db.createItem = function (req, res, next)
 {
     console.log("start create item");    
-    console.log("params ->  id: " + req.body.id +", name: " + req.body.name + ", count: " + req.body.count +", selected: " + req.body.selected + ", list id: " + req.body.listID);
+    console.log("params ->  id: " + req.body.id +", name: " + req.body.name + ", count: " + req.body.count +", selected: " + req.body.selected + ", list id: " + req.body.listID +", measure: " + req.body.measure);
 
     var id = req.body.id;
     var name = req.body.name;
     var count = req.body.count;
     var selected = req.body.selected;
     var listID = req.body.listID;
+    var measure = req.body.measure;
 
-    var queryDB = "INSERT INTO list_items(id, name, count, selected, list_id) VALUES('" + id + "', '" + name + "','" + count + "', '" + selected + "', '" + listID + "')";
+    var queryDB = "INSERT INTO list_items(id, name, count, selected, list_id, measures) " + 
+    " VALUES('" + id + "', '" + name + "','" + count + "', '" + selected + "', '" + listID + "', '"+ measure +"')";
 
     console.log("query db -> " + queryDB);
     getSingleResponse(res, queryDB);
@@ -261,8 +263,9 @@ db.updateItem = function (req, res, next)
     var name = req.body.name;
     var count = req.body.count;
     var selected = req.body.selected;
+    var measure = req.body.measure;
     
-    var queryDB = "UPDATE list_items SET name = '"+ name + "', count = '" + count + "', selected = '" + selected + "' WHERE id = '" + id + "'";    
+    var queryDB = "UPDATE list_items SET name = '"+ name + "', count = '" + count + "', selected = '" + selected + "', measures = '"+ measure +"'  WHERE id = '" + id + "'";    
 
     console.log("query db -> " + queryDB);
     getSingleResponse(res, queryDB);

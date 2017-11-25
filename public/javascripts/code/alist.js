@@ -313,10 +313,12 @@
                         var id = item.id;
                         var fullNameId = "name_" + id;
                         var fullCountId = "count_" + id;
-                        var cbSelected = item.selected == true ? "checked" : ""; 
-                        html += "<div class='form-inline1 div-general-entity-container'>" +
-                                "<div class='form-group1 div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"' title='"+ item.name +"' data-toggle='tooltip'>"+ item.name +"</span></div>" +
+                        var cbSelected = item.selected == true ? "checked" : "";
+                        var measure = item.measures ? item.measures : ''; 
+                        html += "<div class='div-general-entity-container'>" +
+                                "<div class='div-full-entity-name'><span class='entity-general-name' id='"+ fullNameId +"' title='"+ item.name +"' data-toggle='tooltip'>"+ item.name +"</span></div>" +                                
                                 "<span class='entit-general-fl-right span-full-item-select'><input id='"+ id +"' class='input-cb-count' type='checkbox' onclick='checkboxHandler(this, this.id);' value="+ item.selected +" "+ cbSelected+ "></span>"+
+                                "<span class='entit-general-fl-right span-full-item-select' style='width: 30px; margin-top: 5px;'>"+  measure +"</span>" +
                                 "<span class='entit-general-fl-right span-full-item-count'><input id='"+ fullCountId +"' class='input-general-entity-count' type='text' value='"+ item.count  +"'/></span>" +
                                 "</div>";
                     });
@@ -358,11 +360,13 @@
                     var fullNameId = "name_" + id;
                     var fullCountId = "count_" + id;
                     var selectedCountId = generateId();
+                    var measure = item.measures ? item.measures : '';
                     html += "<div id='div_"+ id +"' class='form-inline div-general-entity-container'>" +
-                            "<div class='form-group div-selected-entity-name' style='display: inline-block;'><span class='entity-general-name' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
-                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" +
+                            "<div class='form-group div-selected-entity-name' style='display: inline-block;'><span class='entity-general-name-left-5' id='"+ fullNameId +"'>"+ item.name +"</span></div>" +                                     
+                            "<input id='"+ fullCountId +"' selectedCountId='"+ selectedCountId +"' class='input-general-entity-count input-selected-count' type='text' value='"+ item.count  +"'/>" + 
                             "<a id='btnComplite_"+ id +"' href='#' class='entit-general-fl-right a-button-complite'><img src='/images/complete.png' class='entity-general-button' title='complite item'/></a>"+
                             "<a id='btnDelete_"+ id +"' href='#' class='entit-general-fl-right a-button-delete'><img src='/images/delete.png' class='entity-general-button' title='unselect item'/></a>"+  
+                            "<span class='entit-general-fl-right span-full-item-select1' style='width: 30px; margin-top: 5px;'>"+  measure +"</span>" +
                             "</div>";
                     if(item.complete)
                     {
@@ -376,6 +380,8 @@
             $.each(arrCompliteItems, function(i, item){
                 btnCompliteHandler(null, item);
             });
+
+            itemMenuHandler("aSelectedList");
         }
 
         function btnDeleteHandler(obj, id)
@@ -531,8 +537,7 @@
             })
             
             lists.append(html);
-            getSelectedListItems(activeID);
-            itemMenuHandler("aSelectedList");
+            getSelectedListItems(activeID);            
 
         }
 
@@ -554,6 +559,7 @@
                         "<div id='display_" + value.id + "' class='li-list-general-div list-padding-auto'>" +
                             "<input id='txtItemName_" + value.id + "' class='item-edit-name' value='"+ value.name +"'/>" +                    
                             "<input id='txtItemCount_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.count  +"'>" +
+                            "<input id='txtItemMeasure_"+ value.id +"' class='input-general-entity-count' type='text' value='"+ value.measures  +"'>" +
                             "<input id='cbItemSelected_"+  value.id +"' class='input-cb-count' type='checkbox' onclick='' value="+ value.name +" " + cbSelected + ">"+  
                             "<a id='deleteItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/delete.png' title='delete item'></a>" + 
                             "<a id='updateItem_" + value.id + "' href='#' class='entit-general-fl-right'><img class='entity-general-button' src='/images/edit.png' title='update item'></a>" + 
@@ -661,21 +667,18 @@
 
             var data = {};
             data.name = $("#txtEditNewItemName").val();
+            data.measure = $("#txtEditNewItemMeasure").val();
             data.id = generateId();
             data.count = 1;
             data.selected = false;
             data.listID = listID;
 
-            $.ajax({
-                url: '/lists/createItem',
-                contentType: 'application/json',
-                type: 'POST',
-                data: JSON.stringify(data),
-                success: function(response)
-                {
-                    editList(listID);
-                }
-            });
+            sendDataToServer('/lists/createItem', data, addEditNewItemSuccess, '');            
+        }
+
+        function addEditNewItemSuccess(){
+            var listID = $("#hdnSelectedList").val();
+            editList(listID);
         }
 
         function clearAllSelectedItems()
@@ -766,7 +769,8 @@
                 data.id = id;
                 data.name = $('#txtItemName_' + id).val();
                 data.count = $('#txtItemCount_' + id).val();
-                data.selected = $('#cbItemSelected_' + id).is(":checked"); 
+                data.selected = $('#cbItemSelected_' + id).is(":checked");
+                data.measure = $("#txtItemMeasure_" + id).val(); 
 
                 sendDataToServer('/lists/updateItem', data, updateItemSuccess, '' );                   
                 
