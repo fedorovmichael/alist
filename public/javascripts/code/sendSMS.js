@@ -19,7 +19,8 @@ function sendSMSDataHandler(response)
         message += "שלום\n";
 
         $.each(selectedItems, function(indexItem, item){
-            message += item.name +" - " + item.count + " " + item.measures + " \n";
+            var meas = item.measures != null ? item.measures : ''; 
+            message += item.name +" - " + item.count + " " + meas + " \n";
         });
                
         var result = window.app.sendSMS(phoneNumber, message);
