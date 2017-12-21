@@ -29,12 +29,8 @@
             });
 
             $("#aClearAll").on("click", function(event){
-                event.preventDefault();
-                itemMenuHandler("aFullList");
-                var id = $('#hdnSelectedList').val();
-                var data = {};
-                data.id = id;
-                sendDataToServer('/lists/clearSelectedItems', data, clearAllSelectedItems, '');
+                event.preventDefault();              
+                dialogHandler(clearSelectedItem, 'Очистить выбранные поля?');
             });
 
             
@@ -115,7 +111,8 @@
 
             $("#aSendSMS").on("click", function(event){
                 event.preventDefault();
-                $('#dialog').dialog('open');
+                dialogHandler(sendSMS, 'Отослать заказ по SMS?');
+                //$('#dialog').dialog('open');
                 //sendSMS();                   
             });
             
@@ -139,34 +136,33 @@
                 }
             });
 
-            $("#dialog").dialog({
-                modal: true,
-                width: 350,
-                height: 160,
-                autoOpen: false,
-                draggable: false, 
-                resizable: false,
-                title: "Confirmation",
-                position: { my: "center", at: "center", of: "#divItems" },                   
-                buttons: [
-                    {
-                        id: "Yes",
-                        text: "Yes",
-                        click: function() {
-                                sendSMS();
-                                $(this).dialog('close'); 
-                        }
-                    },
-                    {
-                        id: "No",
-                        text: "No",
-                        click: function () {
-                            $(this).dialog('close');
-                        }
-                    }
-
-                ]
-            });
+            // $("#dialog").dialog({
+            //     modal: true,
+            //     width: 350,
+            //     height: 160,
+            //     autoOpen: false,
+            //     draggable: false, 
+            //     resizable: false,
+            //     title: "Confirmation",
+            //     position: { my: "center", at: "center", of: "#divItems" },                   
+            //     buttons: [
+            //         {
+            //             id: "Yes",
+            //             text: "Yes",
+            //             click: function() {
+            //                     sendSMS();
+            //                     $(this).dialog('close'); 
+            //             }
+            //         },
+            //         {
+            //             id: "No",
+            //             text: "No",
+            //             click: function () {
+            //                 $(this).dialog('close');
+            //             }
+            //         }
+            //     ]
+            // });
 
             $("#aNewCategory").on("click", function(event){
                 event.preventDefault();
@@ -1023,6 +1019,34 @@
             $('#selAvailableItems').append(strOptions);
             $('#selAvailableItems').multiSelect('refresh');
 
+        }
+
+        function clearSelectedItem()
+        {
+            try {                
+                itemMenuHandler("aFullList");                
+                var data = {id: $('#hdnSelectedList').val()};                
+                sendDataToServer('/lists/clearSelectedItems', data, clearAllSelectedItems, '');                
+            } 
+            catch (error) {
+                console.log("error clear selected items: ", error);
+            }
+        }
+
+        function dialogHandler(handlerYesFunction, textBody)
+        {
+            //var runFunction = id === null || id === '' ? handlerYesFunction : handlerYesFunction(id);
+            $("#dialog").dialog({
+                modal: true, width: 370, height: 180, autoOpen: false, draggable: false, resizable: false, title: "Confirmation", text: "dailog text 11111",   
+                position: { my: "center", at: "center", of: "#divItems" },                   
+                buttons: [{ id: "Yes", text: "Yes", click: function(){ 
+                            handlerYesFunction();
+                            $(this).dialog('close'); } },
+                          { id: "No", text: "No", click: function () { $(this).dialog('close'); }}] });
+            
+            
+            $('#dialog').text(textBody);
+            $('#dialog').dialog('open');
         }
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)
