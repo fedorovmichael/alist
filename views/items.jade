@@ -1,0 +1,19 @@
+extends layout  
+block content
+  h2 #{title}
+  input(id="hdnSelectedCategory" type="hidden")
+  input(id="hdnSelectedCategoryList" type="hidden")
+  nav(class="navbar" style="width:300px; border: solid 0px red;")
+    div(class="container")     
+      ul(class="nav navbar-nav")          
+        li(class="list-menu-li" style="float:left;")
+          a(id="aCatHome" href="/" class="list-menu-li" title="Home" )
+            span(class="glyphicon glyphicon-home list-menu-span")
+        li(class="list-menu-li" style="float:left;")
+          a(id="aCatList" href="/lists" class="list-menu-li" title="lists" )
+            span(class="glyphicon glyphicon-th-list list-menu-span")
+  each item in items
+    div(class="row")  
+        div(class="col-md-2")
+        label(for="txtName" class="label-left") Name  
+        input(id="txtName" class="form-control" type="text" placeholder="Name")
