@@ -12,6 +12,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var lists = require('./routes/lists');
 var categories = require('./routes/categories');
+var items = require('./routes/items');
 
 var app = express();
 //load configuration
@@ -68,6 +69,9 @@ app.use('/setItemCategoryID', categories);
 app.use('/removeCategory', categories);
 app.use('/updateCategory', categories);
 app.use('/getCategoriesListByListID', categories);
+
+//items
+app.use('/items', items);
 
 
 //index
