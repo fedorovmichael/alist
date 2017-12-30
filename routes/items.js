@@ -1,7 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var db_items = require('../db/database_items');
+var db_lists = require('../db/database');
 var async = require('async');
+var device = require('express-device');
+
+router.use(device.capture());
+device.enableDeviceHelpers(router);
 
 router.get('/', function(req, res, next) {
 
@@ -17,13 +22,26 @@ router.get('/', function(req, res, next) {
   
                  callback(null, resultGetItems);
               })        
+        },
+
+        function getListsFromDB(callback)
+        {
+            db_lists.getListsWithCallback(function(err, resultGetLists){
+                  if(err){
+                      console.log("get lists from db error: ", err);
+                      callback(err, null); 
+                      return;
+                 }
+  
+                 callback(null, resultGetLists);
+              })        
         }
     ], 
     function(err, result){
         //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       //   console.log(result[0]);
       //   console.log("");
-      res.render('items', {title: "items", items: result[0]});
+      res.render('items', {title: "items", items: result[0], lists: result[1] });
     });
 
     

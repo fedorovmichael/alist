@@ -343,3 +343,7 @@ a {
   color: #000;
   display: inline;
 }
+
+.a-link-general {
+  color: black; cursor: pointer;
+}

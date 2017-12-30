@@ -198,6 +198,11 @@
                 categoryListFilter(listID);
             }); 
             
+            $("body").on("click", "li[id^='liList_']", "a[id^='aList_']", function(event){
+                var listID = this.id.split("_")[1];
+                ddlListsHandler(listID);
+            });
+
         });
 
 
@@ -1047,6 +1052,12 @@
             
             $('#dialog').text(textBody);
             $('#dialog').dialog('open');
+        }
+
+        function ddlListsHandler(listID){
+            var label = $("#aList_" + listID).text();
+            var itemID = $("#liList_" + listID).attr("itemID");
+            $("#spanDdlSelectedLabel_" + itemID).text(label);
         }
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)
