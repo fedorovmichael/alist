@@ -18,7 +18,7 @@ var pool = new pg.Pool(config);
 
 db.getItems = function (callback)
 {
-    var queryDB = "select * from list_items";   
+    var queryDB = "select li.*, l.name as list_name from list_items as li join list as l on li.list_id = l.id";   
 
     console.log("query db -> " + queryDB);
     getMultipleResponse(callback, queryDB);

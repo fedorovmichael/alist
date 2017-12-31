@@ -118,7 +118,7 @@
             
 
             $("body").on("click", "a[id^='updateItem_']", function(event){             
-                updateItem(this.id);
+                updateItem(this.id, null);
             });
 
             $("body").on("click", "a[id^='deleteItem_']", function(event){                   
@@ -198,9 +198,8 @@
                 categoryListFilter(listID);
             }); 
             
-            $("body").on("click", "li[id^='liList_']", "a[id^='aList_']", function(event){
-                var listID = this.id.split("_")[1];
-                ddlListsHandler(listID);
+            $("body").on("click", "li[id^='liList_']", "a[id^='aList_']", function(event){                
+                ddlListsHandler(this.id);
             });
 
         });
@@ -761,7 +760,7 @@
             }
         }
 
-        function updateItem(fullID)
+        function updateItem(fullID, listID)
         {
             try {
                 
@@ -771,7 +770,8 @@
                 data.name = $('#txtItemName_' + id).val();
                 data.count = $('#txtItemCount_' + id).val();
                 data.selected = $('#cbItemSelected_' + id).is(":checked");
-                data.measure = $("#txtItemMeasure_" + id).val(); 
+                data.measure = $("#txtItemMeasure_" + id).val();
+                data.listID = listID;
 
                 sendDataToServer('/lists/updateItem', data, updateItemSuccess, '' );                   
                 
@@ -1054,10 +1054,21 @@
             $('#dialog').dialog('open');
         }
 
-        function ddlListsHandler(listID){
-            var label = $("#aList_" + listID).text();
-            var itemID = $("#liList_" + listID).attr("itemID");
+        function ddlListsHandler(fullID){
+            var listID = fullID.split('_')[2];
+            var itemID = fullID.split('_')[1];
+            var label = $("#aList_" + itemID + "_" + listID).text();
+            
             $("#spanDdlSelectedLabel_" + itemID).text(label);
+
+            var arrDropDownList = $("li[id^='liList_" + itemID + "']");
+            $.each(arrDropDownList, function(i, v){
+                if($(v).hasClass('active')){
+                    $(v).removeClass('active'); 
+                }
+            });
+
+            $("#liList_" + itemID + "_" + listID).addClass('active');
         }
 
         function sendDataToServer(path, data, callbackSuccess, callbackError)

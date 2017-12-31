@@ -16,7 +16,8 @@ block content
     
     
     each item in items
-      div(class="row")  
+      div(class="row")
+        div(class="col-md-1") 
         div(class="col-md-2")
           label(for="txtName" class="label-left") Name  
           input(id="txtName" class="form-control" type="text" placeholder="Name" value="#{item.name}")
@@ -30,17 +31,19 @@ block content
           label(for="ddlLists" class="label-left") Lists
           div(id="ddlLists" class="dropdown" style="margin-bottom:10px;")
             button(class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" style="")
-              span(id="spanDdlSelectedLabel_#{item.id}" style="margin-right:20px;")
+              span(id="spanDdlSelectedLabel_#{item.id}" style="margin-right:20px;") #{item.list_name}
               span(class="caret")
             ul(class="dropdown-menu" style="overflow-y: auto;")
-              each list in lists      
-                li(id="liList_#{list.id}_#{item.id}" itemID="#{item.id}")             
-                  a(id="aList_#{list.id}_#{item.id}" href="#") #{list.name}
+              each list in lists
+                -var active = ''; 
+                -if(list.id == item.list_id){ active = 'active'; }     
+                li(id="liList_#{item.id}_#{list.id}" itemID="#{item.id}" class="#{active}")            
+                  a(id="aList_#{item.id}_#{list.id}" href="#") #{list.name}
         div(class="col-md-4" style="padding-top: 30px;text-align: left")            
-          a(id="aUpdateItem_#{item.id}" href="" class="a-link-general" itemID="" style="margin-right:15px;")
+          a(id="aUpdateItem_#{item.id}" href="javascript:updateItem(updateItem_#{item.id});" class="a-link-general" itemID="" style="margin-right:15px;")
             span(class="glyphicon glyphicon-save" style="margin-right:5px;")
             span Update item
-          a(id="aDeleteItem_#{item.id}" href="" class="a-link-general" style="")
+          a(id="aDeleteItem_#{item.id}" href="javascript:removeItem(deleteItem_#{item.id});" class="a-link-general" style="")
             span(class="glyphicon glyphicon-remove" style="margin-right:5px;")
             span Delete item
           

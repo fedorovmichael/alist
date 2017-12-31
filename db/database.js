@@ -264,10 +264,16 @@ db.updateItem = function (req, res, next)
     var count = req.body.count;
     var selected = req.body.selected;
     var measure = req.body.measure;
-    
-    var queryDB = "UPDATE list_items SET name = '"+ name + "', count = '" + count + "', selected = '" + selected + "', measures = '"+ measure +"'  WHERE id = '" + id + "'";    
+    var listID = req.body.listID;
+    var updateListID = "";
 
-    console.log("query db -> " + queryDB);
+    if(listID != null){
+        updateListID = ", list_id = '" + listID +"'";
+    }
+    
+    var queryDB = "UPDATE list_items SET name = '"+ name + "', count = '" + count + "', selected = '" + selected + "', measures = '"+ measure +"' "+ updateListID +"  WHERE id = '" + id + "'";    
+
+    console.log("updateItem query db -> " + queryDB);
     getSingleResponse(res, queryDB);
 }
 
