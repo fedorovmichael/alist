@@ -272,8 +272,9 @@ db.updateItem = function (req, res, next)
     }
     
     var queryDB = "UPDATE list_items SET name = '"+ name + "', count = '" + count + "', selected = '" + selected + "', measures = '"+ measure +"' "+ updateListID +"  WHERE id = '" + id + "'";    
-
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     console.log("updateItem query db -> " + queryDB);
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     getSingleResponse(res, queryDB);
 }
 

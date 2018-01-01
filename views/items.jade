@@ -19,14 +19,14 @@ block content
       div(class="row")
         div(class="col-md-1") 
         div(class="col-md-2")
-          label(for="txtName" class="label-left") Name  
-          input(id="txtName" class="form-control" type="text" placeholder="Name" value="#{item.name}")
+          label(for="txtItemName_#{item.id}" class="label-left") Name  
+          input(id="txtItemName_#{item.id}" class="form-control" type="text" placeholder="Name" value="#{item.name}")
         div(class="col-md-1")
-          label(for="txtCount" class="label-left") Count  
-          input(id="txtCount" class="form-control" type="text" placeholder="Count" value="#{item.count}")
+          label(for="txtItemCount_#{item.id}" class="label-left") Count  
+          input(id="txtItemCount_#{item.id}" class="form-control" type="text" placeholder="Count" value="#{item.count}")
         div(class="col-md-1")
-          label(for="txtMeasures" class="label-left") Measures  
-          input(id="txtMeasures" class="form-control" type="text" placeholder="Measures" value="#{item.measures}")
+          label(for="txtItemMeasure_#{item.id}" class="label-left") Measures  
+          input(id="txtItemMeasure_#{item.id}" class="form-control" type="text" placeholder="Measures" value="#{item.measures}")
         div(class="col-md-2")
           label(for="ddlLists" class="label-left") Lists
           div(id="ddlLists" class="dropdown" style="margin-bottom:10px;")
@@ -40,10 +40,10 @@ block content
                 li(id="liList_#{item.id}_#{list.id}" itemID="#{item.id}" class="#{active}")            
                   a(id="aList_#{item.id}_#{list.id}" href="#") #{list.name}
         div(class="col-md-4" style="padding-top: 30px;text-align: left")            
-          a(id="aUpdateItem_#{item.id}" href="javascript:updateItem(updateItem_#{item.id});" class="a-link-general" itemID="" style="margin-right:15px;")
+          a(id="aUpdateItem_#{item.id}" href="javascript:updateItem('updateItem_#{item.id}');" class="a-link-general" itemID="" style="margin-right:15px;")
             span(class="glyphicon glyphicon-save" style="margin-right:5px;")
             span Update item
-          a(id="aDeleteItem_#{item.id}" href="javascript:removeItem(deleteItem_#{item.id});" class="a-link-general" style="")
+          a(id="aDeleteItem_#{item.id}" href="javascript:removeItem('deleteItem_#{item.id}');" class="a-link-general" style="")
             span(class="glyphicon glyphicon-remove" style="margin-right:5px;")
             span Delete item
           

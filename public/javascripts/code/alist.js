@@ -118,7 +118,7 @@
             
 
             $("body").on("click", "a[id^='updateItem_']", function(event){             
-                updateItem(this.id, null);
+                updateItem(this.id);
             });
 
             $("body").on("click", "a[id^='deleteItem_']", function(event){                   
@@ -760,11 +760,13 @@
             }
         }
 
-        function updateItem(fullID, listID)
+        function updateItem(fullID)
         {
             try {
-                
                 var id = fullID.split('_')[1];
+                var startID = 'liList_'+ id +'_'
+                var list = $(".active[id^='"+ startID +"']")[0]; 
+                var listID = $(list).attr("id").split("_")[2];         
                 var data = {};
                 data.id = id;
                 data.name = $('#txtItemName_' + id).val();
