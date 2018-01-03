@@ -43,8 +43,32 @@ router.get('/', function(req, res, next) {
       //   console.log("");
       res.render('items', {title: "items", items: result[0], lists: result[1] });
     });
-
     
 });
+
+router.get('/items_print', function(req, res, next) {
+    
+        async.series([
+            function getItemsFromDB(callback)
+            {
+                db_items.getItems(function(err, resultGetItems){
+                      if(err){
+                          console.log("get items list from db error: ", err);
+                          callback(err, null); 
+                          return;
+                     }
+      
+                     callback(null, resultGetItems);
+                  })        
+            }   
+        ], 
+        function(err, result){
+            //console.log("categories data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+          //   console.log(result[0]);
+          //   console.log("");
+          res.render('items_print', {title: "print items", items: result[0] });
+        });
+        
+    });
 
 module.exports = router;

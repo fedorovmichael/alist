@@ -347,3 +347,17 @@ a {
 .a-link-general {
   color: black; cursor: pointer;
 }
+
+.table-head-border
+{
+	border-right-width: 3px;
+	border-right-style: solid;
+	border-right-color: #fff;
+}
+
+.table-body-border
+{
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color:#ddd;
+}

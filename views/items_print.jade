@@ -1,0 +1,32 @@
+extends layout  
+block content
+  div(class="container text-center" style="margin-bottom:40px;")
+    h2 #{title}
+    input(id="hdnSelectedCategory" type="hidden")
+    input(id="hdnSelectedCategoryList" type="hidden")
+    nav(class="navbar" style="width:300px; border: solid 0px red;")
+      div(class="container")     
+        ul(class="nav navbar-nav")          
+          li(class="list-menu-li" style="float:left;")
+            a(id="aCatHome" href="/" class="list-menu-li" title="Home" )
+              span(class="glyphicon glyphicon-home list-menu-span")
+          li(class="list-menu-li" style="float:left;")
+            a(id="aCatList" href="/lists" class="list-menu-li" title="lists" )
+              span(class="glyphicon glyphicon-th-list list-menu-span")
+          li(id="liItems" class="list-menu-li" style="float:left;")
+            a(id="aItems" href="/items" class="list-menu-li" title="Items" )
+              span(class="glyphicon glyphicon-edit list-menu-span")
+    
+    table(id="tableEditSeances" class="table" style="margin-top:20px; direction:rtl;" border="0")
+      tr(style="background-color: #f5f5f5; border-rigth:white;")
+        th(class="text-center table-head-border" style="width: 250px;" ) שם
+        th(class="text-center table-head-border" style="width: 100px;") כמות
+        th(class="text-center table-head-border") הוראות            
+      each item in items
+        tr(style="text-align: right;")
+          td(class="table-body-border")
+            span(style="margin-right: 10px;") #{item.name}
+          td(class="table-body-border")
+            span
+          td(class="table-body-border")
+            span  

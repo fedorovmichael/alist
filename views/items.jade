@@ -4,17 +4,32 @@ block content
     h2 #{title}
     input(id="hdnSelectedCategory" type="hidden")
     input(id="hdnSelectedCategoryList" type="hidden")
-    nav(class="navbar" style="width:300px; border: solid 0px red;")
-      div(class="container")     
+    nav(class="navbar" style="width:300px; border: solid 0px red; margin-bottom:10px;")
+      div(class="container" style="margin-left:20%;")     
         ul(class="nav navbar-nav")          
           li(class="list-menu-li" style="float:left;")
-            a(id="aCatHome" href="/" class="list-menu-li" title="Home" )
+            a(id="aItemHome" href="/" class="list-menu-li" title="Home" )
               span(class="glyphicon glyphicon-home list-menu-span")
           li(class="list-menu-li" style="float:left;")
-            a(id="aCatList" href="/lists" class="list-menu-li" title="lists" )
+            a(id="aItemList" href="/lists" class="list-menu-li" title="lists" )
               span(class="glyphicon glyphicon-th-list list-menu-span")
+          li(class="list-menu-li" style="float:left;")
+            a(id="aItemList" href="/items/items_print" class="list-menu-li" title="print items" )
+              span(class="glyphicon glyphicon-print list-menu-span")
+          li(style="float:left; margin-top: 10px;")
+            div(class="dropdown" style1="margin-bottom:10px;")
+              button(class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width:200px;")
+                span(id="spanItemListText" style="margin-right:20px;") Select list 
+                span(class="caret")
+              ul(class="dropdown-menu")
+                each list in lists
+                  li(id="liItemList_#{list.id}")
+                    a(id="aItemList_#{list.id}" href="#") #{list.name}      
     
-    
+    div(class="row")
+     div(class="col-md-12")
+       hr
+
     each item in items
       div(class="row")
         div(class="col-md-1") 

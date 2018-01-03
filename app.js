@@ -72,6 +72,7 @@ app.use('/getCategoriesListByListID', categories);
 
 //items
 app.use('/items', items);
+app.use('/items_print', items);
 
 
 //index
