@@ -69,6 +69,34 @@ router.get('/items_print', function(req, res, next) {
           res.render('items_print', {title: "print items", items: result[0] });
         });
         
+});
+
+router.get('/items_filter/:id', function(req, res, next){
+    var listID = req.params.id;
+    async.series([
+        function getListItemsWithCallbackFromDB(callback)
+        {            
+            db_lists.getListItemsWithCallback(listID, function (err, resultGetListItemsWithCallback){
+                    if(err){
+                        console.log("get list items from db error: ", err);
+                        callback(err, null); 
+                        return;
+                    };
+                    
+                    callback(null, resultGetListItemsWithCallback);
+
+                    console.log("item by list data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    console.log(resultGetListItemsWithCallback);
+                    console.log("");
+                });        
+        }
+    ], 
+    function(err, result){
+        console.log("item by list data: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        console.log(result[0]);
+        console.log("");
+      res.render('items', {title: "items", items: result[0] });
     });
+});
 
 module.exports = router;

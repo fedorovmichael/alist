@@ -114,7 +114,7 @@ db.getListItemsWithCallback = function(listID, callback)
         
     var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' ORDER BY selected DESC";
 
-    console.log("query db -> " + queryDB);
+    console.log("getListItemsWithCallback query db -> " + queryDB);
     getMultipleResponseWithCallback(callback, queryDB);
 }
 
@@ -136,7 +136,7 @@ db.getSelectedItemsWithCallback = function(listID, callback)
 {
     console.log("start get selected items list with callback");
     console.log("callback function: ========================================");
-    console.log(callback);   
+    //console.log(callback);   
         
     var queryDB = "SELECT * FROM list_items WHERE list_id = '" + listID + "' AND selected = true ";
 
@@ -421,6 +421,8 @@ function getMultipleResponseWithCallback(cb, queryDB)
             console.log("query ++++++++++++++++++++++++++++++++++++++++:");
             console.log(queryDB);
             if(cb != undefined){
+                console.log("return result  ++++++++++++++++++++++++++++++++++++++++:");
+                console.log(result.rows);
                 cb(null, result.rows);
             }
         });

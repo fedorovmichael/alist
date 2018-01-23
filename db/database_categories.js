@@ -22,7 +22,7 @@ db.getCategories = function (callback)
 {
     var queryDB = "select * from categories";
 
-    console.log("query db -> " + queryDB);
+    console.log("db.getCategories query db -> " + queryDB);
     getMultipleResponse(callback, queryDB);
 }
 
