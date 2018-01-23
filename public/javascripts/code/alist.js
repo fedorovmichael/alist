@@ -1073,6 +1073,16 @@
             $("#liList_" + itemID + "_" + listID).addClass('active');
         }
 
+        function itemsFilter(listID)
+        {            
+            var port = window.location.port ? ":" + window.location.port : "",
+                path = window.location.protocol + "//" + window.location.hostname + port + "/items_filter/" + listID;
+        
+            window.location.href = path;
+
+            return false;
+        }
+
         function sendDataToServer(path, data, callbackSuccess, callbackError)
         {
             try {

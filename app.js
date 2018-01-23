@@ -73,7 +73,7 @@ app.use('/getCategoriesListByListID', categories);
 //items
 app.use('/items', items);
 app.use('/items_print', items);
-
+app.use('/items_filter/:id', items);
 
 //index
 app.use('/', index);

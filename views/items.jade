@@ -24,7 +24,7 @@ block content
               ul(class="dropdown-menu")
                 each list in lists
                   li(id="liItemList_#{list.id}")
-                    a(id="aItemList_#{list.id}" href="#") #{list.name}      
+                    a(id="aItemList_#{list.id}" href="javascript:itemsFilter('#{list.id}')") #{list.name}
     
     div(class="row")
      div(class="col-md-12")
