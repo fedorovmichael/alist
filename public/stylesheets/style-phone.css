@@ -299,6 +299,11 @@ a {
   display: none;
 }
 
+#liItems
+{
+  display: none;
+}
+
 a[id^="delete_"] {
   display: none;
 }
