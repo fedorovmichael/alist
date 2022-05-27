@@ -347,28 +347,39 @@ db.updateCompleteValue = function (req, res, next)
 
 //GENERAL FUNCTIONS==========================================================
 
-function getSingleResponse(res, queryDB)
+async function getSingleResponse(res, queryDB)
 {
-   pool.connect(function(err, client, done){
-        if(err)
-        {
-            console.error("connection error -> " + err);
-        }
-        else
-        {
-            console.log("success connec to db");
-        }
+    let result;
+    try {
+        result = await pool.query(queryDB);
+        console.log('getSingleResponse result: ', result);
+    } 
+    catch (error) {
+        console.error("send query error -> ", error);
+        throw Error(error)
+    } 
+    res.json({data: result});
 
-        client.query(queryDB, function(err, result){
-            done();
-            if(err)
-            {
-                console.error("send query error -> ", err);
-            }
-            console.log("retrieved result -> ", result);
-            res.json({data: result});
-        });
-    }); 
+//    pool.connect(function(err, client, done){
+//         if(err)
+//         {
+//             console.error("connection error -> " + err);
+//         }
+//         else
+//         {
+//             console.log("success connec to db");
+//         }
+
+//         client.query(queryDB, function(err, result){
+//             done();
+//             if(err)
+//             {
+//                 console.error("send query error -> ", err);
+//             }
+//             console.log("retrieved result -> ", result);
+//             res.json({data: result});
+//         });
+//     }); 
 }
 
 function getMultipleResponse(res, queryDB)
